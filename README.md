@@ -7,7 +7,8 @@ Les données sont structurées sous forme tabulaire avec des attributs tels que 
 L’analyse vise à détecter des tendances : périodes critiques, espèces les plus touchées, phases de vol à risque et conditions favorisant les collisions. L’objectif est d’explorer ces facteurs pour optimiser les mesures de prévention et améliorer la sécurité aérienne.
 # Identifier des tendances temporelles : 
 y a-t-il des périodes de l'année ou des moments de la journée où les collisions sont plus fréquentes ?
-# Analyser les espèces les plus impliquées : quelles espèces animales sont les plus souvent impliquées dans ces incidents ?
+# Analyser les espèces les plus impliquées : 
+quelles espèces animales sont les plus souvent impliquées dans ces incidents ?
 # Évaluer la gravité des incidents : 
 quels types d'aéronefs ou quelles phases de vol sont les plus susceptibles de subir des dommages graves ?
 # Explorer les facteurs contributifs : 
