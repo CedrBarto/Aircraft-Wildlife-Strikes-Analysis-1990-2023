@@ -28,7 +28,7 @@ L’étude vise à identifier des tendances et à explorer les facteurs de risqu
 
 • Quelles sont les espèces les plus impliquées ?
 
-• Quels types d’aéronefs et quelles phases de vol sont les plus vulnérables ?
+• Quels types d’avions et quelles phases de vol sont les plus vulnérables ?
 
 • Y a-t-il des conditions météorologiques favorisant ces incidents ?
   
