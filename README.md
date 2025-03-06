@@ -1,6 +1,6 @@
 # Aircraft-Wildlife-Strikes-Analysis-1990-2023
 ## Contexte
-Ce dataset recense les collisions entre aéronefs et la faune entre 1990 et 2023. Il provient de la Federal Aviation Administration (FAA), qui collecte ces données à partir des rapports soumis par les pilotes, les compagnies aériennes et les aéroports. L’objectif est d’analyser ces incidents pour améliorer la sécurité aérienne et prévenir les risques.
+Ce dataset recense les collisions entre avions et la faune entre 1990 et 2023. Il provient de la Federal Aviation Administration (FAA), qui collecte ces données à partir des rapports soumis par les pilotes, les compagnies aériennes et les aéroports. L’objectif est d’analyser ces incidents pour améliorer la sécurité aérienne et prévenir les risques.
 ### URL dataset : 
 https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023
 
