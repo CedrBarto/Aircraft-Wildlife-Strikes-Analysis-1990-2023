@@ -1,14 +1,23 @@
 # Aircraft-Wildlife-Strikes-Analysis-1990-2023
 # Contexte
-Les données proviennent de la Federal Aviation Administration (FAA) et recensent les collisions entre avions et la faune de 1990 à 2023. Elles sont issues des rapports obligatoires soumis par les pilotes, compagnies aériennes et aéroports pour améliorer la sécurité aérienne.
-# Description
-Les données sont structurées sous forme tabulaire avec des attributs tels que la date et l’heure, l’aéroport concerné, l’opérateur, le type d’avion, l’espèce impliquée et le niveau de dommages. Elles permettent d’identifier les circonstances des collisions et leurs conséquences.
-## But
-- L’analyse vise à détecter des tendances : périodes critiques, espèces les plus touchées, phases de vol à risque et conditions favorisant les collisions. L’objectif est d’explorer ces facteurs pour optimiser les mesures de prévention et améliorer la sécurité aérienne.
-- Identifier des tendances temporelles : y a-t-il des périodes de l'année ou des moments de la journée où les collisions sont plus fréquentes?
-- Analyser les espèces les plus impliquées : quelles espèces animales sont les plus souvent impliquées dans ces incidents?
-- Évaluer la gravité des incidents : quels types d'avions ou quelles phases de vol sont les plus susceptibles de subir des dommages graves?
-- Explorer les facteurs contributifs : des conditions météorologiques spécifiques ou des localisations géographiques augmentent-elles le risque de collision?
-# Références
-- Ces données ont été utilisées dans des études sur la gestion de la faune en aéroport, l’impact des conditions météorologiques et la sécurité aérienne. Des analyses académiques et industrielles s’en servent pour proposer des solutions de prévention des collisions.
-- https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023
+Ce dataset recense les collisions entre aéronefs et la faune entre 1990 et 2023. Il provient de la Federal Aviation Administration (FAA), qui collecte ces données à partir des rapports soumis par les pilotes, les compagnies aériennes et les aéroports. L’objectif est d’analyser ces incidents pour améliorer la sécurité aérienne et prévenir les risques.
+# URL dataset : 
+https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023
+# Description des données
+Les données sont organisées sous forme de tableau avec différentes colonnes, parmi lesquelles :
+- Date et heure : moment précis de l’incident
+- Localisation : aéroport, état, coordonnées géographiques
+- Opérateur de l’aéronef : compagnie aérienne ou entité exploitant l’aéronef
+- Type d’aéronef : modèle et fabricant de l’aéronef
+- Phase de vol : décollage, atterrissage, croisière, etc.
+- Espèce impliquée : type d’animal, souvent un oiseau
+- Niveau de dommages : de "aucun dommage" à "destruction de l’aéronef"
+# Objectif de l’analyse
+L’étude vise à identifier des tendances et à explorer les facteurs de risque :
+- Quels sont les mois ou moments de la journée les plus à risque ?
+- Quelles sont les espèces les plus impliquées ?
+- Quels types d’aéronefs et quelles phases de vol sont les plus vulnérables ?
+- Y a-t-il des conditions météorologiques favorisant ces incidents ?
+- L’objectif final est d’optimiser les stratégies de prévention pour réduire le nombre de collisions et améliorer la sécurité aérienne.
+# Références et usages
+Ce dataset a été utilisé dans des études académiques et industrielles sur la gestion de la faune autour des aéroports, l’impact des conditions météorologiques sur les collisions et l’amélioration des mesures de prévention. Des chercheurs et analystes l’exploitent pour développer des stratégies de réduction des risques et renforcer la sécurité aérienne.
