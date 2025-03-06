@@ -13,17 +13,13 @@ Les données sont organisées sous forme de tableau avec différentes colonnes, 
 
 • Operator : La compagnie aérienne ou l'entité exploitant l'aéronef impliqué dans l'incident.
 
-• Aircraft_Type : Le modèle ou le type d'aéronef concerné.
+• Aircraft_Type : Le modèle ou le type d'avion concerné.
 
 • Wildlife_Species : L'espèce animale impliquée dans la collision.
 
 • Flight_Phase : La phase du vol au moment de l'incident (décollage, atterrissage, croisière, etc.).
 
-• Damage_Level : Le niveau de dommages subis par l'aéronef, allant de "aucun dommage" à "destruction".
-
-• Speed_in_knots : La vitesse de l'aéronef en nœuds au moment de l'incident.
-
-• Height_in_feet : L'altitude de l'aéronef en pieds lors de la collision.
+• Damage_Level : Le niveau de dommages subis par l'avion, allant de "aucun dommage" à "destruction".
 
 • Pilot_Warning : Indique si le pilote a été averti de la présence de faune avant l'incident.
   
@@ -37,8 +33,6 @@ L’étude vise à identifier des tendances et à explorer les facteurs de risqu
 • Quels types d’aéronefs et quelles phases de vol sont les plus vulnérables ?
 
 • Y a-t-il des conditions météorologiques favorisant ces incidents ?
-
-• L’objectif final est d’optimiser les stratégies de prévention pour réduire le nombre de collisions et améliorer la sécurité aérienne.
   
 ## Références
 Pour une idée générale du projet : https://www.reuters.com/graphics/SOUTHKOREA-CRASH/BIRDSTRIKES/egpbjdamxpq/
