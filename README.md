@@ -44,4 +44,4 @@ L’étude vise à identifier des tendances et à explorer les facteurs de risqu
 Pour une idée générale du projet : https://www.reuters.com/graphics/SOUTHKOREA-CRASH/BIRDSTRIKES/egpbjdamxpq/
 
 ### Inspirations
-
+Visualiation des données sur une carte : https://observablehq.com/@d3/bubble-map/2
