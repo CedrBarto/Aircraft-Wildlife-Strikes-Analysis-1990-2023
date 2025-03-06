@@ -6,6 +6,7 @@ https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023
 
 # Description des données
 Les données sont organisées sous forme de tableau avec différentes colonnes, parmi lesquelles :
+
 • Incident_Date : La date à laquelle l'incident s'est produit.
 
 • Location : L'endroit où l'incident a eu lieu, généralement spécifié par l'aéroport ou la région.
