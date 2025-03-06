@@ -41,8 +41,6 @@ L’étude vise à identifier des tendances et à explorer les facteurs de risqu
 • L’objectif final est d’optimiser les stratégies de prévention pour réduire le nombre de collisions et améliorer la sécurité aérienne.
   
 ## Références
-Ce dataset a été utilisé dans des études académiques et industrielles sur la gestion de la faune autour des aéroports, l’impact des conditions météorologiques sur les collisions et l’amélioration des mesures de prévention. Des chercheurs et analystes l’exploitent pour développer des stratégies de réduction des risques et renforcer la sécurité aérienne.
-
 Pour une idée générale du projet : https://www.reuters.com/graphics/SOUTHKOREA-CRASH/BIRDSTRIKES/egpbjdamxpq/
 
 ### Inspirations
