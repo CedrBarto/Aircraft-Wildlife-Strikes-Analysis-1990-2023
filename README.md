@@ -20,8 +20,6 @@ Les données sont organisées sous forme de tableau avec différentes colonnes, 
 • Flight_Phase : La phase du vol au moment de l'incident (décollage, atterrissage, croisière, etc.).
 
 • Damage_Level : Le niveau de dommages subis par l'avion, allant de "aucun dommage" à "destruction".
-
-• Pilot_Warning : Indique si le pilote a été averti de la présence de faune avant l'incident.
   
 ## Objectif de l’analyse
 L’étude vise à identifier des tendances et à explorer les facteurs de risque :
