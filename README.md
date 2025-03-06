@@ -10,4 +10,5 @@ Les données sont structurées sous forme tabulaire avec des attributs tels que 
 - Évaluer la gravité des incidents : quels types d'avions ou quelles phases de vol sont les plus susceptibles de subir des dommages graves?
 - Explorer les facteurs contributifs : des conditions météorologiques spécifiques ou des localisations géographiques augmentent-elles le risque de collision?
 # Références
-Ces données ont été utilisées dans des études sur la gestion de la faune en aéroport, l’impact des conditions météorologiques et la sécurité aérienne. Des analyses académiques et industrielles s’en servent pour proposer des solutions de prévention des collisions.
+- Ces données ont été utilisées dans des études sur la gestion de la faune en aéroport, l’impact des conditions météorologiques et la sécurité aérienne. Des analyses académiques et industrielles s’en servent pour proposer des solutions de prévention des collisions.
+- https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023
