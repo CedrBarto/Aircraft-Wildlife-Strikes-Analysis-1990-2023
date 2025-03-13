@@ -38,3 +38,4 @@ Pour une idée générale du projet : https://www.reuters.com/graphics/SOUTHKORE
 ### Inspirations
 Visualiation des données sur une carte : https://observablehq.com/@d3/bubble-map/2
 # Wireframe
+Figma : https://www.figma.com/design/dDdr8dbbM0GvLIAlxcG4IV/Wireframe?node-id=0-1&t=JE1zREXDcDSlXvXV-1
