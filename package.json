@@ -2,10 +2,12 @@
   "name": "aircraft-wildlife-strikes-analysis-1990-2023",
   "version": "1.0.0",
   "description": "Ce dataset recense les collisions entre avions et la faune entre 1990 et 2023. Il provient de la Federal Aviation Administration (FAA), qui collecte ces données à partir des rapports soumis par les pilotes, les compagnies aériennes et les aéroports. L’objectif est d’analyser ces incidents pour améliorer la sécurité aérienne et prévenir les risques.\r ### URL dataset : \r https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "dev": "vite --port 3006",
+  "build": "vite build",
+  "start": "vite preview --port 3006"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CedrBarto/Aircraft-Wildlife-Strikes-Analysis-1990-2023.git"
@@ -19,5 +21,8 @@
   "homepage": "https://github.com/CedrBarto/Aircraft-Wildlife-Strikes-Analysis-1990-2023#readme",
   "dependencies": {
     "d3": "^7.9.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2"
   }
 }
