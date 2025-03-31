@@ -16,10 +16,8 @@ const phases = [
     { name: "Approach", incidents: 75220, highlight: false },
     { name: "Climb", incidents: 26956, highlight: false },
     { name: "Landing Roll", incidents: 32157, highlight: false },
-    { name: "Taxi", incidents: 667, highlight: false },
     { name: "En Route", incidents: 5306, highlight: false },
     { name: "Descent", incidents: 2331, highlight: false },
-    { name: "Local", incidents: 1150, highlight: false }
 ];
 
 const phaseWidth = (width - margin.left - margin.right) / phases.length;
@@ -187,34 +185,6 @@ const planeX = margin.left + phaseWidth * 1.2;
 const planeY = height - margin.bottom - 80;
 const baseY = 150;
 
-svg.append("path")
-    .attr("d", "M0,-10 Q-10,10 -20,10 Q-20,20 -10,20 Q0,30 10,20 Q20,20 10,10 Q10,10 0,-10 Z")
-    .attr("transform", `translate(${planeX}, ${planeY}) scale(0.8) rotate(-15)`)
-    .attr("fill", "#00bcd4");
-
-// Ajouter la barre horizontale mobile
-svg.append("rect")
-    .attr("x", margin.left + phaseWidth * 1.2 - 15)
-    .attr("y", height - margin.bottom - 5)
-    .attr("width", 30)
-    .attr("height", 10)
-    .attr("fill", "#00bcd4")
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
-
-function dragstarted(event, d) {
-    d3.select(this).raise().attr("stroke", "black");
-}
-
-function dragged(event, d) {
-    d3.select(this).attr("x", d3.event.x);
-}
-
-function dragended(event, d) {
-    d3.select(this).attr("stroke", null);
-}
 
 // Ajouter les cercles pour avancer et reculer
 svg.append("circle")

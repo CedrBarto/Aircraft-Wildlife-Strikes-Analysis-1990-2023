@@ -1,0 +1,35 @@
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+    fill: #666;
+  }
+  
+  .phase-label {
+    font-size: 12px;
+  }
+  
+  .phase-group rect {
+    transition: opacity 0.2s;
+  }
+  
+  .phase-group:hover rect {
+    opacity: 0.8;
+  }
+  .count-label {
+    font-size: 12px;
+    fill: #666;
+  }
+  
+  .phase-group rect {
+    transition: opacity 0.2s;
+    opacity: 0.8;
+  }
+  
+  .phase-group:hover rect {
+    opacity: 1;
+  }
