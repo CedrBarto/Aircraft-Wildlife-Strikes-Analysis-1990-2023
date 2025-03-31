@@ -7,10 +7,17 @@ index.html
     <title>Aircraft Wildlife Strikes Analysis (1990-2023)</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/visualizations.css">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/visualizations.css">
 
-    <script type="module" src="./pages/index.js"></script>
+    <div class="container">
+        <h1 class="title">Most strikes take place close to ground</h1>
+        <p class="subtitle">While the number and size of the birds can escalate the potential impact to an aircraft, it also makes a difference where the birds impact the aircraft.</p>
+        
+        <div id="visualization"></div>
+    </div>
+
+    <script type="module" src="/pages/phaseOfFlight.js"></script>
     
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
