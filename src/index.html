@@ -1,4 +1,3 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +6,8 @@ index.html
     <title>Aircraft Wildlife Strikes Analysis (1990-2023)</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/visualizations.css">
+    <link rel="stylesheet" href="/style/main.css">
+    <link rel="stylesheet" href="/style/visualizations.css">
 
     <script type="module" src="./pages/index.js"></script>
     
@@ -16,9 +15,18 @@ index.html
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+
+    <main>
+        <section class="visualization-section">
+            <!-- Container pour la visualisation - IMPORTANT: enlevez style="display: none" -->
+            <div id="daytime-container" class="visualization-container">
+                <!-- Le contenu sera généré par D3.js -->
+            </div>
+        </section>
+    </main>
     
     <footer>
-        <p>© 2024 - Projet VisualDon - HEIG-VD</p>
+        <p>© 2025 - Projet VisualDon - HEIG-VD</p>
         <p>Données: <a href="https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023" target="_blank">Federal Aviation Administration</a></p>
     </footer>
 
