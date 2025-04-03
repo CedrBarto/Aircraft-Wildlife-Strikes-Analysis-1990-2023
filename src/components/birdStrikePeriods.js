@@ -11,9 +11,18 @@ const PLANE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 469.77 1
   <path d="M438.79,145.3c-5.18-.1-11.26.5-16.2-1.3-4.67-1.7-8.58-8.65-13.26-8.75-7.53-.15-19.82,3.24-28.05,4.05-25.97,2.53-56,4.63-81.98,2.99-11.98-.76-22.47-1.06-34.1-1.66-9.62-.5-12.1-.14-22.88-.29-10.16-.14-21.44-.15-31.53-1.03-.28,1.89,8.35,2.62,6,4.98l-16.8,3.21-1.2,4.79c1.25,1.11,11.09-3.17,9.98.49l-14.47,25.53c-2.17,1.95-19.67-.19-22.09-1.94-2.7-1.96-7.78-16.25-10.1-16.97-1.22-.38-6.24.72-7.29,1.44-3.42,2.34-.05,5.7-9.5,6.5-5.21.44-15.53-.47-20.91-1.16-3.75-.48-16.45-2.77-18.92-4.81-3.9-3.22-2.95-19.45-1.19-24.05,4.57-11.94,15.78-4.85,24.99-6.81l22.5,3.79c-.71-1.14-.83-3.1-1.54-3.96-1.01-1.23-26.85-9.14-30.22-9.78-25.69-4.83-53.51-4.49-79.45-10.55-7.99-1.87-35.07-10.38-39.01-16.98-6.44-10.77,8.65-14.21,14.58-17.87,3.87-2.39,6.21-6.07,11.29-8.71,12.1-6.29,31.28-5.78,44.9-5.18,47.05,2.06,95.54,12.96,142.74,14.81l101.08-50.91c7.12-5.95,13.39-18.36,20.08-23.92,2.1-1.74,1.54-1.37,4.88-.5l1.71.46c.27.07.39.38.25.62-7.06,11.65-11.38,24.27-21.8,33.45-3.8,3.35-25.63,17.86-26.46,19.54-1.28,2.57,9.04,3,7.99,6.49h-16.5c-1.54,0-15.82,11.76-18.49,13.51-.41,2.01.47,1.22,1.27,1.7,2.22,1.33,5.08,2.67,7.72,2.79-1.06,2.84-5.75,2.12-8.54,2.03-2.49-.09-10.11-3.16-9.45.96,13.81.84,27.64,2.43,41.37,4.13,17.31,2.14,37.34,6.64,54.14,7.86,13.59.99,18.63-1.98,28.5-10.47,19.17-16.5,35.65-38.4,55.41-54.59,3.47-1.49,20.81-.31,23.6,1.58s-16.6,55.38-17.01,62.49c7.92-2.6,16.58-9.53,24.97-4.49l-22.97,21.01c-.45,2.29,1,1.24,2.35,1.61,3.64.99,18.52,3.57,19.49,6.54.57,1.74.14,5.75-1.12,7.08-3.68,3.91-22.93,4.47-28.74,6.25v14Z"/>
 </svg>`;
 
+const MOON_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" id="Glyph" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 104.178 121.509" style="enable-background:new 0 0 104.178 121.509;" xml:space="preserve">
+<path fill="#E0E0E0" d="M54.431,0c10.325,11.588,15.977,26.349,15.977,41.889c0,34.929-28.651,63.346-63.868,63.346
+	c-2.172,0-4.361-0.111-6.54-0.333c11.51,10.732,26.421,16.606,42.31,16.606c34.114,0,61.868-27.52,61.868-61.346
+	C104.178,31.004,82.991,5.644,54.431,0z"/>
+</svg>`;
+
 // Convertir les SVG en URI data pour les utiliser dans les éléments image
 const cloudSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(CLOUD_SVG);
 const planeSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(PLANE_SVG);
+const moonSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(MOON_SVG);
 
 console.log("SVG intégrés directement en URI data");
 
@@ -33,6 +42,7 @@ export default class BirdStrikePeriods {
     // Stockage des URLs SVG en Data URI
     this.cloudSvgUrl = cloudSvgUrl;
     this.planeSvgUrl = planeSvgUrl;
+    this.moonSvgUrl = moonSvgUrl;
     
     this.init();
   }
@@ -159,6 +169,10 @@ export default class BirdStrikePeriods {
     const cloudPlaneGroup = this.sceneGroup.append('g')
       .attr('class', 'cloud-plane-group');
     
+    // Create celestial bodies group
+    this.celestialGroup = this.sceneGroup.append('g')
+      .attr('class', 'celestial-group');
+    
     // Try all possible SVG paths
     this.tryCreateSVGElements(cloudPlaneGroup);
   }
@@ -170,37 +184,38 @@ export default class BirdStrikePeriods {
     // Utilisons directement les URLs importées
     const cloudUrl = this.cloudSvgUrl;
     const planeUrl = this.planeSvgUrl;
+    const moonUrl = this.moonSvgUrl;
     
-    console.log("Utilisation des URLs importées:", { cloudUrl, planeUrl });
+    console.log("Utilisation des URLs importées:", { cloudUrl, planeUrl, moonUrl });
     
     try {
       // Far left cloud - écarté davantage vers la gauche
       const farLeftCloud = cloudPlaneGroup.append('image')
         .attr('href', cloudUrl)
-        .attr('width', 320)  // Augmenté de 260 à 320
-        .attr('height', 240) // Augmenté de 195 à 240
-        .attr('x', -550)     // Ajusté pour le centrage
-        .attr('y', -180)     // Ajusté pour le centrage
+        .attr('width', 260)  // Augmenté de 200 à 260
+        .attr('height', 195) // Augmenté de 150 à 195
+        .attr('x', -520)     // Ajusté pour le centrage
+        .attr('y', -170)     // Ajusté pour le centrage
         .attr('class', 'cloud far-left-cloud')
         .style('opacity', 0.75);
       
       // Left cloud - principal nuage à gauche, écarté du premier
       const leftCloud = cloudPlaneGroup.append('image')
         .attr('href', cloudUrl)
-        .attr('width', 450)  // Augmenté de 380 à 450
-        .attr('height', 380) // Augmenté de 320 à 380
-        .attr('x', -390)     // Ajusté pour le centrage
-        .attr('y', -220)     // Ajusté pour le centrage
+        .attr('width', 380)  // Augmenté de 300 à 380
+        .attr('height', 320) // Augmenté de 250 à 320
+        .attr('x', -360)     // Ajusté pour le centrage
+        .attr('y', -200)     // Ajusté pour le centrage
         .attr('class', 'cloud left-cloud')
         .style('opacity', 0.9);
       
-      // Airplane - positionné au centre et orienté vers la droite - AGRANDI ENCORE PLUS
+      // Airplane - positionné au centre et orienté vers la droite - AGRANDI DAVANTAGE
       const airplane = cloudPlaneGroup.append('image')
         .attr('href', planeUrl)
-        .attr('width', 320)  // Augmenté de 260 à 320
-        .attr('height', 120) // Augmenté de 98 à 120
-        .attr('x', -160)     // Ajusté pour le centrage
-        .attr('y', -38)      // Ajusté pour l'alignement vertical
+        .attr('width', 260)  // Augmenté de 200 à 260
+        .attr('height', 98)  // Augmenté de 75 à 98
+        .attr('x', -130)     // Ajusté pour le centrage
+        .attr('y', -32)      // Ajusté pour l'alignement vertical
         .attr('class', 'airplane')
         // Orienté vers la droite (symétrie horizontale)
         .style('transform', 'scaleX(-1)');
@@ -208,22 +223,30 @@ export default class BirdStrikePeriods {
       // Right cloud - principal nuage à droite
       const rightCloud = cloudPlaneGroup.append('image')
         .attr('href', cloudUrl)
-        .attr('width', 480)  // Augmenté de 400 à 480
-        .attr('height', 380) // Augmenté de 320 à 380
-        .attr('x', 160)      // Ajusté pour le centrage
-        .attr('y', -140)     // Ajusté pour le centrage
+        .attr('width', 400)  // Augmenté de 320 à 400
+        .attr('height', 320) // Augmenté de 250 à 320
+        .attr('x', 140)      // Ajusté pour le centrage
+        .attr('y', -120)     // Ajusté pour le centrage
         .attr('class', 'cloud right-cloud')
         .style('opacity', 0.9);
         
       // Far right cloud
       const farRightCloud = cloudPlaneGroup.append('image')
         .attr('href', cloudUrl)
-        .attr('width', 320)  // Augmenté de 260 à 320
-        .attr('height', 240) // Augmenté de 195 à 240
-        .attr('x', 380)      // Ajusté pour le centrage
-        .attr('y', -80)      // Ajusté pour le centrage
+        .attr('width', 260)  // Augmenté de 200 à 260
+        .attr('height', 195) // Augmenté de 150 à 195
+        .attr('x', 340)      // Ajusté pour le centrage
+        .attr('y', -60)      // Ajusté pour le centrage
         .attr('class', 'cloud far-right-cloud')
         .style('opacity', 0.75);
+      
+      // Create moon element with new dimensions
+      this.moon = this.celestialGroup.append('image')
+        .attr('href', moonUrl)
+        .attr('width', 80)  // Réduit de 100 à 80
+        .attr('height', 96)  // Réduit de 120 à 96 pour garder le ratio
+        .attr('class', 'moon')
+        .style('opacity', 0);
       
       // Vérification si les éléments ont été créés correctement
       const allElements = [farLeftCloud, leftCloud, airplane, rightCloud, farRightCloud];
@@ -254,47 +277,47 @@ export default class BirdStrikePeriods {
   createFallbackElements(cloudPlaneGroup) {
     // Far left cloud fallback
     cloudPlaneGroup.append('ellipse')
-      .attr('cx', -520)
-      .attr('cy', -50)
-      .attr('rx', 135)
-      .attr('ry', 95)
+      .attr('cx', -470)
+      .attr('cy', -40)
+      .attr('rx', 110)
+      .attr('ry', 75)
       .attr('fill', '#E0E0E0')
       .attr('class', 'fallback-element')
       .style('display', 'none');
     
     // Cloud fallback (left)
     cloudPlaneGroup.append('ellipse')
-      .attr('cx', -360)
-      .attr('cy', -60)
-      .attr('rx', 160)
-      .attr('ry', 110)
+      .attr('cx', -310)
+      .attr('cy', -50)
+      .attr('rx', 130)
+      .attr('ry', 90)
       .attr('fill', '#E0E0E0')
       .attr('class', 'fallback-element')
       .style('display', 'none');
     
-    // Airplane fallback - agrandi encore davantage
+    // Airplane fallback - agrandi davantage
     cloudPlaneGroup.append('path')
-      .attr('d', 'M0,0 L65,20 L50,0 L65,-20 Z')
+      .attr('d', 'M0,0 L50,16 L40,0 L50,-16 Z')
       .attr('fill', 'black')
       .attr('class', 'fallback-element')
       .style('display', 'none');
     
     // Cloud fallback (right)
     cloudPlaneGroup.append('ellipse')
-      .attr('cx', 200)
-      .attr('cy', -40)
-      .attr('rx', 160)
-      .attr('ry', 110)
+      .attr('cx', 170)
+      .attr('cy', -30)
+      .attr('rx', 130)
+      .attr('ry', 90)
       .attr('fill', '#E0E0E0')
       .attr('class', 'fallback-element')
       .style('display', 'none');
       
     // Far right cloud fallback
     cloudPlaneGroup.append('ellipse')
-      .attr('cx', 420)
-      .attr('cy', -20)
-      .attr('rx', 135)
-      .attr('ry', 95)
+      .attr('cx', 360)
+      .attr('cy', -10)
+      .attr('rx', 110)
+      .attr('ry', 75)
       .attr('fill', '#E0E0E0')
       .attr('class', 'fallback-element')
       .style('display', 'none');
@@ -415,6 +438,23 @@ export default class BirdStrikePeriods {
       .transition()
       .duration(1000)
       .style('opacity', this.getCloudOpacity(period));
+
+    // Update celestial bodies
+    this.updateCelestialBodies(period);
+  }
+
+  updateCelestialBodies(period) {
+    // Hide moon initially
+    this.moon.style('opacity', 0);
+
+    if (period === 'night') {
+      this.moon
+        .attr('x', -40)  // Ajusté pour le nouveau centrage (-80/2)
+        .attr('y', -this.height/2 + 30)  // Garde la même position verticale
+        .transition()
+        .duration(1000)
+        .style('opacity', 0.9);
+    }
   }
 
   setActivePeriod(period) {

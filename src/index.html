@@ -9,14 +9,9 @@
     <link rel="stylesheet" href="style/main.css">
     <link rel="stylesheet" href="style/visualizations.css">
 
-    <div class="container">
-        <h1 class="title">Most strikes take place close to ground</h1>
-        <p class="subtitle">While the number and size of the birds can escalate the potential impact to an aircraft, it also makes a difference where the birds impact the aircraft.</p>
-        
-        <div id="visualization"></div>
-    </div>
 
-    <script type="module" src="/pages/phaseOfFlight.js"></script>
+    <script type="module" src="/components/phaseOfFlight.js"></script>
+    <script type="module" src="/pages/index.js"></script>
     
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -24,6 +19,14 @@
 <body>
 
     <main>
+
+        <div class="container">
+            <h1 class="title">Most strikes take place close to ground</h1>
+            <p class="subtitle">While the number and size of the birds can escalate the potential impact to an aircraft, it also makes a difference where the birds impact the aircraft.</p>
+            
+            <div id="visualization"></div>
+        </div>
+        
         <section class="visualization-section">
             <!-- Container pour la visualisation - IMPORTANT: enlevez style="display: none" -->
             <div id="daytime-container" class="visualization-container">
