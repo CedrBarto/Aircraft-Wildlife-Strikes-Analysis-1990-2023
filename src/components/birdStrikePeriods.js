@@ -51,7 +51,7 @@ export default class BirdStrikePeriods {
     this.createLayout();
     this.createScene();
     this.createButtons();
-    this.setActivePeriod('night');
+    this.setActivePeriod('dawn');
   }
 
   createLayout() {

@@ -301,6 +301,11 @@ phases.forEach((phase, phaseIndex) => {
                 .transition()
                 .duration(200)
                 .attr("opacity", 1);
+            // Changer la couleur de tous les carrés de la phase en bleu
+            phaseGroup.selectAll(".grid-square")
+                .transition()
+                .duration(200)
+                .attr("fill", "#00bcd4");
         })
         .on("mouseout", function() {
             // Ne pas cacher les données si c'est la phase active
@@ -313,6 +318,13 @@ phases.forEach((phase, phaseIndex) => {
                     .transition()
                     .duration(200)
                     .attr("opacity", 0);
+            }
+            // Revenir à la couleur grise pour tous les carrés si ce n'est pas la phase active
+            if (currentPhase !== phaseIndex) {
+                phaseGroup.selectAll(".grid-square")
+                    .transition()
+                    .duration(200)
+                    .attr("fill", "#d3d3d3");
             }
         })
         .on("click", () => {
