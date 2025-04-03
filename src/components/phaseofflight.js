@@ -12,12 +12,12 @@ const svg = d3.select("#visualization")
 
 // Définir les phases de vol
 const phases = [
-    { name: "Take-off Run", incidents: 30245, highlight: false },
-    { name: "Approach", incidents: 75220, highlight: false },
-    { name: "Climb", incidents: 26956, highlight: false },
-    { name: "Landing Roll", incidents: 32157, highlight: false },
+    { name: "Décollage", incidents: 30245, highlight: false },
+    { name: "Ascension", incidents: 26956, highlight: false },
     { name: "En Route", incidents: 5306, highlight: false },
-    { name: "Descent", incidents: 2331, highlight: false },
+    { name: "Descente", incidents: 2331, highlight: false },
+    { name: "Approche", incidents: 75220, highlight: false },
+    { name: "Atterrissage", incidents: 32157, highlight: false }
 ];
 
 const phaseWidth = (width - margin.left - margin.right) / phases.length;
@@ -214,13 +214,31 @@ phases.forEach((phase, i) => {
         .style("cursor", "pointer")
         .on("click", () => {
             currentPhase = i;
+            // Afficher les données de la phase cliquée
+            d3.select(`.phase-${i} .incidents-count`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
+            d3.select(`.phase-${i} .incidents-percentage`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
             updatePositions(i);
         });
 });
 
 // Modifier la création des groupes de phase
 phases.forEach((phase, phaseIndex) => {
-    const baseX = margin.left + phaseWidth * phaseIndex + phaseWidth / 2 - (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2;
+    // Calculer la position de base avec un décalage supplémentaire pour les phases spécifiques
+    let offset = 0;
+    if (phaseIndex === 2) { // En Route
+        offset = 8; // Déplacer vers la droite
+    } else if (phaseIndex === 3) { // Descent
+        offset = 12; // Déplacer plus vers la droite
+    } else if (phaseIndex === 4 || phaseIndex === 5) { // Approach et Landing Roll
+        offset = -5; // Déplacer vers la gauche
+    }
+    const baseX = margin.left + phaseWidth * phaseIndex + phaseWidth / 2 - (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2 + offset;
     const baseY = 80;
     
     // Calculer le nombre de carrés basé sur le pourcentage
@@ -234,8 +252,11 @@ phases.forEach((phase, phaseIndex) => {
         .attr("data-total", phase.incidents);
 
     // Ajouter le nombre d'incidents au-dessus des carrés (initialement caché)
+    const textOffset = phaseIndex === phases.length - 1 ? -15 : 
+                      (phaseIndex >= phases.length - 2 ? -10 : 
+                      (phaseIndex === 2 || phaseIndex === 3) ? -10 : 0); // Décalage pour En Route et Descent
     phaseGroup.append("text")
-        .attr("x", baseX + (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2)
+        .attr("x", baseX + (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2 + textOffset)
         .attr("y", baseY - 30)
         .attr("text-anchor", "middle")
         .attr("fill", "#333")
@@ -245,7 +266,7 @@ phases.forEach((phase, phaseIndex) => {
 
     // Ajouter le pourcentage en dessous du nombre d'incidents (initialement caché)
     phaseGroup.append("text")
-        .attr("x", baseX + (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2)
+        .attr("x", baseX + (squareSize * squaresPerRow + squarePadding * (squaresPerRow - 1)) / 2 + textOffset)
         .attr("y", baseY - 10)
         .attr("text-anchor", "middle")
         .attr("fill", "#666")
@@ -282,15 +303,17 @@ phases.forEach((phase, phaseIndex) => {
                 .attr("opacity", 1);
         })
         .on("mouseout", function() {
-            // Cacher les données
-            phaseGroup.select(".incidents-count")
-                .transition()
-                .duration(200)
-                .attr("opacity", 0);
-            phaseGroup.select(".incidents-percentage")
-                .transition()
-                .duration(200)
-                .attr("opacity", 0);
+            // Ne pas cacher les données si c'est la phase active
+            if (currentPhase !== phaseIndex) {
+                phaseGroup.select(".incidents-count")
+                    .transition()
+                    .duration(200)
+                    .attr("opacity", 0);
+                phaseGroup.select(".incidents-percentage")
+                    .transition()
+                    .duration(200)
+                    .attr("opacity", 0);
+            }
         })
         .on("click", () => {
             currentPhase = phaseIndex;
