@@ -20,9 +20,10 @@
   },
   "homepage": "https://github.com/CedrBarto/Aircraft-Wildlife-Strikes-Analysis-1990-2023#readme",
   "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
     "d3": "^7.9.0"
   },
   "devDependencies": {
-    "vite": "^6.2.2"
+    "vite": "^6.2.5"
   }
 }

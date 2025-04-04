@@ -250,7 +250,7 @@
 
 #visualization {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     margin: 0 auto;

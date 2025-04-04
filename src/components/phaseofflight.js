@@ -39,13 +39,6 @@ const lineGenerator = d3.line()
     .y(d => d.y)
     .curve(d3.curveBasis);
 
-// Dessiner le chemin de vol avec un arrondi
-svg.append("path")
-    .attr("d", lineGenerator(flightPathData))
-    .attr("fill", "none")
-    .attr("stroke", "#333")
-    .attr("stroke-width", 1.5)
-    .attr("stroke-linecap", "round");
 
 // Dessiner la ligne de sol
 svg.append("line")
@@ -104,58 +97,50 @@ const planeImage = planeGroup.append("image")
     .attr("y", -15)
     .attr("transform", "scale(-1, 1)"); // Miroir horizontal de l'avion
 
-// Ajouter le cercle bleu pour le suivi linéaire
-const blueCircle = svg.append("circle")
-    .attr("cx", margin.left + phaseWidth * 1.2)
-    .attr("cy", height - margin.bottom)
-    .attr("r", 15)
-    .attr("fill", "#00bcd4");
-
 // Position initiale de l'avion et du cercle
 let currentPhase = 0;
 updatePositions(currentPhase);
 
-// Fonction pour mettre à jour les positions et l'état visuel
-function updatePositions(phaseIndex) {
-    // Position du cercle bleu
-    const circleX = margin.left + phaseWidth * phaseIndex + phaseWidth / 2;
-    
-    // Calculer l'index des points de la courbe
-    const index = Math.floor(phaseIndex);
-    const nextIndex = Math.min(index + 1, flightPathData.length - 1);
-    
-    // Calculer le facteur d'interpolation
-    const t = (circleX - flightPathData[index].x) / (flightPathData[nextIndex].x - flightPathData[index].x);
-    
-    // Interpoler la position Y
-    const y = flightPathData[index].y + (flightPathData[nextIndex].y - flightPathData[index].y) * t;
-    
-    // Mettre à jour la position de l'avion
-    planeGroup
-        .transition()
-        .duration(2000)
-        .ease(d3.easeQuadInOut)
-        .attr("transform", `translate(${circleX}, ${y})`);
-    
-    // Garder l'avion à plat avec le miroir horizontal
-    planeImage
-        .transition()
-        .duration(2000)
-        .attr("transform", "scale(-1, 1)");
-    
-    // Mettre à jour la position du cercle bleu
-    blueCircle
-        .transition()
-        .duration(2000)
-        .ease(d3.easeQuadInOut)
-        .attr("cx", circleX);
+// Modifier le conteneur du curseur
+const rangeContainer = d3.select(".container")
+    .append("div")
+    .style("margin-top", "-50px")
+    .style("clear", "both")
+    .style("width", width + "px");
 
-    // Mettre à jour les couleurs des carrés
+rangeContainer.append("input")
+    .attr("type", "range")
+    .attr("min", "0")
+    .attr("max", "100")
+    .attr("value", "0")
+    .attr("id", "flightProgress")
+    .style("width", "100%")
+    .style("display", "block")
+    .style("cursor", "pointer")
+    .attr("fill", "#d3d3d3")
+    .attr("color", "white")
+
+
+// Modifier la fonction updatePositions pour supprimer les références au cercle bleu
+function updatePositions(t) {
+    const normalizedT = t / 100;
+    
+    const point = getPointAtT(normalizedT);
+    const angle = getAngleAtT(normalizedT);
+    
+    planeGroup
+        .attr("transform", `translate(${point.x}, ${point.y}) rotate(${angle})`);
+    
+    const phaseIndex = Math.floor(normalizedT * (phases.length - 0.01));
+    
     phases.forEach((phase, i) => {
         d3.selectAll(`.phase-${i} .grid-square`)
-            .transition()
-            .duration(200)
             .attr("fill", i === phaseIndex ? "#00bcd4" : "#d3d3d3");
+        
+        d3.select(`.phase-${i} .incidents-count`)
+            .attr("opacity", i === phaseIndex ? 1 : 0);
+        d3.select(`.phase-${i} .incidents-percentage`)
+            .attr("opacity", i === phaseIndex ? 1 : 0);
     });
 }
 
@@ -284,7 +269,8 @@ phases.forEach((phase, phaseIndex) => {
         .attr("width", squareSize)
         .attr("height", squareSize)
         .attr("class", "grid-square")
-        .attr("fill", phase.highlight ? "#00bcd4" : "#d3d3d3")
+        .attr("fill", "#d3d3d3")
+        .attr("color", "white")
         .attr("rx", 2)
         .attr("ry", 2)
         .style("cursor", "pointer");
@@ -329,6 +315,12 @@ phases.forEach((phase, phaseIndex) => {
         })
         .on("click", () => {
             currentPhase = phaseIndex;
-            updatePositions(phaseIndex);
+            updatePositions(i);
         });
+});
+
+// Ajouter l'écouteur d'événements pour le curseur
+d3.select("#flightProgress").on("input", function() {
+    const value = this.value;
+    updatePositions(value);
 });
