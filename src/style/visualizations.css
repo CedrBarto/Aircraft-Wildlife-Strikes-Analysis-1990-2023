@@ -4,14 +4,11 @@
 }
 
 .visualization-container {
+    margin: 2rem auto;
+    padding: 2rem;
     background-color: white;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    min-height: 540px;
-    display: flex;
-    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Layout for bird strike visualization */
@@ -280,4 +277,129 @@
 
 .grid-square {
     transition: fill 0.3s ease;
+}
+
+/* Styles pour le carousel des espèces */
+.species-container {
+    min-height: 600px;
+}
+
+.carousel-container {
+    height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.images-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.bird-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 400px;
+}
+
+.bird-image {
+    max-width: 300px;
+    max-height: 250px;
+    width:fit-content;5
+    height:fit-content;
+    object-fit: contain;
+    transition: all 0.3s ease-in-out;
+    margin: 0 auto;
+}
+
+.bird-item.prev .bird-image,
+.bird-item.next .bird-image {
+    max-width: 160px;
+    max-height: 130px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.6;
+    filter: blur(3px);
+}
+
+.bird-name {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+}
+
+.stats-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.stat-container {
+    text-align: center;
+}
+
+.stat-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 8px;
+    filter: brightness(0.4);
+    transition: filter 0.3s ease;
+}
+
+.stat-container:hover .stat-icon {
+    filter: brightness(0.6);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+/* Transitions pour les images */
+.bird-item.prev,
+.bird-item.next {
+    opacity: 0.6;
+    filter: blur(3px);
+}
+
+.bird-item.current {
+    opacity: 1;
+    filter: none;
 }
