@@ -117,8 +117,8 @@ rangeContainer.append("input")
     .style("width", "100%")
     .style("display", "block")
     .style("cursor", "pointer")
-    .attr("fill", "#d3d3d3")
-    .attr("color", "white")
+    .style("fill", "#00BCD4")
+    .style("color", "white")
 
 
 // Modifier la fonction updatePositions pour supprimer les références au cercle bleu
