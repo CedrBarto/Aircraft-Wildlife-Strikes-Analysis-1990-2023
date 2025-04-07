@@ -181,10 +181,10 @@ export default class Species {
     // Création des conteneurs de statistiques
     const stats = ['deaths', 'percentage', 'size', 'rank'];
     const statLabels = {
-      deaths: 'Morts',
-      percentage: 'Pourcentage',
-      size: 'Taille',
-      rank: 'Place'
+      deaths: '',
+      percentage: '',
+      size: '',
+      rank: ''
     };
 
     stats.forEach(stat => {
@@ -197,20 +197,15 @@ export default class Species {
         .attr('src', icons[stat])
         .style('width', '24px')
         .style('height', '24px')
-        .style('margin-bottom', '8px');
+        .style('margin-bottom', '8px')
 
       statContainer.append('div')
         .attr('class', 'stat-label')
-        .style('font-size', '14px')
-        .style('color', '#666')
         .text(statLabels[stat]);
 
       statContainer.append('div')
         .attr('class', `stat-value ${stat}-value`)
-        .style('font-size', '20px')
-        .style('font-weight', 'bold')
-        .style('margin', '5px 0')
-        .style('color', '#333');
+        .style('margin', '5px')
     });
   }
 
