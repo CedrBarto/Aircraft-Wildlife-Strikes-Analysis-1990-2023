@@ -14,68 +14,12 @@ export default class Species {
     this.currentIndex = 0;
     this.birds = [
       {
-        name: "European Starling",
-        image: new URL('../../public/assets/img/europeanstarling.png', import.meta.url).href,
-        deaths: "6'148",
-        percentage: "~ 4%",
-        size: "32cm",
-        rank: "10e"
-      },
-      {
-        name: "Gulls",
-        image: new URL('../../public/assets/img/gulls.png', import.meta.url).href,
-        deaths: "7'414",
-        percentage: "~ 4%",
-        size: "35cm",
-        rank: "9e"
-      },
-      {
-        name: "Horned Lark",
-        image: new URL('../../public/assets/img/hornedlark.png', import.meta.url).href,
-        deaths: "8'032",
-        percentage: "~ 5%",
-        size: "28cm",
-        rank: "8e"
-      },
-      {
-        name: "American Kestrel",
-        image: new URL('../../public/assets/img/kestrel.png', import.meta.url).href,
-        deaths: "8'879",
-        percentage: "~ 5%",
-        size: "33cm",
-        rank: "7e"
-      },
-      {
-        name: "Killdeer",
-        image: new URL('../../public/assets/img/killdeer.png', import.meta.url).href,
-        deaths: "9'592",
-        percentage: "~ 5%",
-        size: "26cm",
-        rank: "6e"
-      },
-      {
-        name: "Barn Swallow",
-        image: new URL('../../public/assets/img/barn.png', import.meta.url).href,
-        deaths: "9'679",
-        percentage: "~ 5%",
-        size: "30cm",
-        rank: "5e"
-      },
-      {
-        name: "Mourning Dove",
-        image: new URL('../../public/assets/img/mourningdove.png', import.meta.url).href,
-        deaths: "14'576",
-        percentage: "~ 8%",
-        size: "30cm",
-        rank: "4e"
-      },
-      {
-        name: "Unknown Bird",
-        image: new URL('../../public/assets/img/unknownbird.png', import.meta.url).href,
-        deaths: "24'834",
-        percentage: "~ 14%",
-        size: "40cm+",
-        rank: "3e"
+        name: "Unknown Bird (Small)",
+        image: new URL('../../public/assets/img/unknownbird_small.png', import.meta.url).href,
+        deaths: "48'898",
+        percentage: "~ 28%",
+        size: "<25cm",
+        rank: "1er"
       },
       {
         name: "Unknown Bird (Medium)",
@@ -86,12 +30,68 @@ export default class Species {
         rank: "2e"
       },
       {
-        name: "Unknown Bird (Small)",
-        image: new URL('../../public/assets/img/unknownbird_small.png', import.meta.url).href,
-        deaths: "48'898",
-        percentage: "~ 28%",
-        size: "<25cm",
-        rank: "1er"
+        name: "Unknown Bird",
+        image: new URL('../../public/assets/img/unknownbird.png', import.meta.url).href,
+        deaths: "24'834",
+        percentage: "~ 14%",
+        size: "40cm+",
+        rank: "3e"
+      },
+      {
+        name: "Mourning Dove",
+        image: new URL('../../public/assets/img/mourningdove.png', import.meta.url).href,
+        deaths: "14'576",
+        percentage: "~ 8%",
+        size: "30cm",
+        rank: "4e"
+      },
+      {
+        name: "Barn Swallow",
+        image: new URL('../../public/assets/img/barn.png', import.meta.url).href,
+        deaths: "9'679",
+        percentage: "~ 5%",
+        size: "30cm",
+        rank: "5e"
+      },
+      {
+        name: "Killdeer",
+        image: new URL('../../public/assets/img/killdeer.png', import.meta.url).href,
+        deaths: "9'592",
+        percentage: "~ 5%",
+        size: "26cm",
+        rank: "6e"
+      },
+      {
+        name: "American Kestrel",
+        image: new URL('../../public/assets/img/kestrel.png', import.meta.url).href,
+        deaths: "8'879",
+        percentage: "~ 5%",
+        size: "33cm",
+        rank: "7e"
+      },
+      {
+        name: "Horned Lark",
+        image: new URL('../../public/assets/img/hornedlark.png', import.meta.url).href,
+        deaths: "8'032",
+        percentage: "~ 5%",
+        size: "28cm",
+        rank: "8e"
+      },
+      {
+        name: "Gulls",
+        image: new URL('../../public/assets/img/gulls.png', import.meta.url).href,
+        deaths: "7'414",
+        percentage: "~ 4%",
+        size: "35cm",
+        rank: "9e"
+      },
+      {
+        name: "European Starling",
+        image: new URL('../../public/assets/img/europeanstarling.png', import.meta.url).href,
+        deaths: "6'148",
+        percentage: "~ 4%",
+        size: "32cm",
+        rank: "10e"
       }
     ];
     
@@ -116,15 +116,11 @@ export default class Species {
     // Titre
     mainContainer.append('h2')
       .attr('class', 'title')
-      .style('text-align', 'center')
-      .style('color', '#333')
       .text('Les espèces les plus touchées');
 
     // Sous-titre
     mainContainer.append('p')
       .attr('class', 'subtitle')
-      .style('text-align', 'center')
-      .style('color', '#666')
       .text('While the number and size of the birds can escalate the potential impact to an aircraft, it also makes a difference where the birds impact the aircraft.');
 
     // Carousel container
@@ -135,19 +131,21 @@ export default class Species {
       .style('justify-content', 'center')
       .style('margin', '40px 0')
       .style('position', 'relative')
-      .style('min-height', '400px');
+      .style('min-height', '400px')
+      .style('margin-left', '150px')
+      .style('margin-right', '150px');
 
     // Bouton précédent
     this.carouselContainer.append('button')
       .attr('class', 'nav-button prev')
       .style('position', 'absolute')
-      .style('left', '20px')
+      .style('left', '0px')
       .style('z-index', '2')
       .style('background', 'none')
       .style('border', 'none')
       .style('cursor', 'pointer')
       .style('font-size', '24px')
-      .html('←')
+      .html('◀')
       .on('click', () => this.navigate(-1));
 
     // Images container
@@ -169,7 +167,7 @@ export default class Species {
       .style('border', 'none')
       .style('cursor', 'pointer')
       .style('font-size', '24px')
-      .html('→')
+      .html('▶')
       .on('click', () => this.navigate(1));
 
     // Stats container

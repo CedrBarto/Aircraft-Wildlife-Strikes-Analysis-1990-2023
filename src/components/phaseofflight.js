@@ -108,7 +108,8 @@ const rangeContainer = d3.select(".container")
     .style("clear", "both")
     .style("width", width + "px");
 
-rangeContainer.append("input")
+// Ne conserver que cette partie qui crée le slider et lui attache les événements
+const flightProgress = rangeContainer.append("input")
     .attr("type", "range")
     .attr("min", "0")
     .attr("max", "100")
@@ -116,10 +117,29 @@ rangeContainer.append("input")
     .attr("id", "flightProgress")
     .style("width", "100%")
     .style("display", "block")
-    .style("cursor", "pointer")
-    .attr("fill", "#d3d3d3")
-    .attr("color", "white")
+    .style("cursor", "pointer");
 
+// Fonction pour mettre à jour la couleur du slider
+function updateSliderColor(value) {
+    const percentage = value;
+    document.getElementById("flightProgress").style.background = 
+        `linear-gradient(to right, #00C2CB 0%, #00C2CB ${percentage}%, #d3d3d3 ${percentage}%)`;
+}
+
+// Ajouter ces événements pour mettre à jour la visualisation du slider
+flightProgress.on("input", function() {
+    const value = this.value;
+    updateSliderColor(value);
+    updatePositions(value);
+});
+
+// Initialiser la couleur du slider
+updateSliderColor(0);
+
+// S'assurer que la couleur est mise à jour correctement si d'autres scripts modifient la valeur
+flightProgress.on("change", function() {
+    updateSliderColor(this.value);
+});
 
 // Modifier la fonction updatePositions pour supprimer les références au cercle bleu
 function updatePositions(t) {
@@ -319,8 +339,80 @@ phases.forEach((phase, phaseIndex) => {
         });
 });
 
-// Ajouter l'écouteur d'événements pour le curseur
-d3.select("#flightProgress").on("input", function() {
-    const value = this.value;
-    updatePositions(value);
+// Remplacer les écouteurs de clic sur les carrés et les phases
+
+// Ajouter une fonction pour animer le mouvement de l'avion
+function animateToPhase(targetPhase) {
+    // Obtenir la valeur actuelle du slider
+    const currentValue = parseFloat(document.getElementById("flightProgress").value);
+    
+    // Calculer la valeur cible en fonction de la phase (milieu de la phase)
+    const targetValue = (targetPhase + 0.5) * (100 / phases.length);
+    
+    // Durée de l'animation en ms
+    const duration = 1000;
+    const fps = 60;
+    const frames = duration / 1000 * fps;
+    
+    // Calculer l'incrément par frame
+    const increment = (targetValue - currentValue) / frames;
+    
+    let frame = 0;
+    
+    // Fonction d'animation
+    function animate() {
+        frame++;
+        
+        // Calculer la nouvelle valeur avec une fonction d'easing
+        const progress = frame / frames;
+        const easedProgress = 1 - Math.pow(1 - progress, 3); // Easing cubic out
+        const newValue = currentValue + (targetValue - currentValue) * easedProgress;
+        
+        // Mettre à jour le slider et la position de l'avion
+        document.getElementById("flightProgress").value = newValue;
+        updateSliderColor(newValue);
+        updatePositions(newValue);
+        
+        // Continuer l'animation si nous n'avons pas terminé
+        if (frame < frames) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    // Démarrer l'animation
+    animate();
+}
+
+// Modifier les événements de clic sur les zones de phase
+phases.forEach((phase, i) => {
+    svg.append("rect")
+        .attr("x", margin.left + phaseWidth * i)
+        .attr("y", 0)
+        .attr("width", phaseWidth)
+        .attr("height", height)
+        .attr("fill", "transparent")
+        .style("cursor", "pointer")
+        .on("click", () => {
+            currentPhase = i;
+            // Afficher les données de la phase cliquée
+            d3.select(`.phase-${i} .incidents-count`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
+            d3.select(`.phase-${i} .incidents-percentage`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
+                
+            // Animer l'avion vers cette phase
+            animateToPhase(i);
+        });
+});
+
+// Modifier le code du clic sur les carrés pour utiliser la même animation
+squares.on("click", () => {
+    currentPhase = phaseIndex;
+    
+    // Animer l'avion vers cette phase
+    animateToPhase(phaseIndex);
 });

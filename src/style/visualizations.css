@@ -282,6 +282,29 @@
 /* Styles pour le carousel des espèces */
 .species-container {
     min-height: 600px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #00C2CB;
+}
+
+.species-container .title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #00C2CB;
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.species-container .subtitle {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .carousel-container {
@@ -300,7 +323,7 @@
     justify-content: center;
     position: relative;
 }
-
+    
 .bird-item {
     display: flex;
     flex-direction: column;
@@ -308,12 +331,13 @@
     justify-content: center;
     padding: 20px;
     height: 400px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .bird-image {
     max-width: 300px;
     max-height: 250px;
-    width:fit-content;5
+    width:fit-content;
     height:fit-content;
     object-fit: contain;
     transition: all 0.3s ease-in-out;
@@ -337,24 +361,37 @@
     font-size: 18px;
     color: #333;
     font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .nav-button {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: none;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease;
+    color: #666;
+    font-size: 48px;
+    font-weight: bold;
+    line-height: 1;
 }
 
 .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.1);
+    transform: scale(1.2);
+    color: #333;
+}
+
+.nav-button.prev {
+    left: 20px;
+}
+
+.nav-button.next {
+    right: 20px;
 }
 
 .stats-container {
@@ -362,6 +399,7 @@
     display: flex;
     justify-content: center;
     gap: 3rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .stat-container {
@@ -384,12 +422,14 @@
     font-size: 20px;
     font-weight: bold;
     color: #333;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .stat-label {
     font-size: 14px;
     color: #666;
     margin-bottom: 4px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Transitions pour les images */
@@ -402,4 +442,70 @@
 .bird-item.current {
     opacity: 1;
     filter: none;
+}
+
+/* Styles personnalisés pour le slider de vol */
+#flightProgress {
+    -webkit-appearance: none;  /* Supprime l'apparence par défaut */
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    /* Définir un background par défaut au cas où le JavaScript échoue */
+    background: linear-gradient(to right, #00C2CB 0%, #d3d3d3 0%);
+}
+
+/* Styles pour la piste du slider sur Firefox */
+#flightProgress::-moz-range-track {
+    background: transparent;
+    border: none;
+}
+
+/* Styles pour la piste du slider sur Chrome et Safari */
+#flightProgress::-webkit-slider-runnable-track {
+    background: transparent;
+    border: none;
+}
+
+/* Style du bouton du slider */
+#flightProgress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #666;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 2;
+}
+
+#flightProgress::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #666;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+}
+
+/* Style lors du maintien du slider */
+#flightProgress:active::-webkit-slider-thumb {
+    background: #00C2CB;
+    transform: scale(1.2);
+}
+
+#flightProgress:active::-moz-range-thumb {
+    background: #00C2CB;
+    transform: scale(1.2);
+}
+
+/* Style au survol */
+#flightProgress:hover::-webkit-slider-thumb {
+    background: #00C2CB;
+}
+
+#flightProgress:hover::-moz-range-thumb {
+    background: #00C2CB;
 }
