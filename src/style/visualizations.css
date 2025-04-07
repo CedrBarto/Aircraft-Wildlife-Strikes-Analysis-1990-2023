@@ -409,9 +409,17 @@
     padding: 10px;
     width: 200px;
     background-color: #f9f9f9;
+    margin-top: 20px;
+    text-align: center;
 }
 
 path {
     cursor: pointer;
     transition: fill 0.3s ease;
+}
+
+#aircraft-visualization {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
 }

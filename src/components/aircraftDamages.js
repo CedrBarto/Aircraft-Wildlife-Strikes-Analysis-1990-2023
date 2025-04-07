@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-// Importer les fichiers SVG
+// Définir les chemins des fichiers SVG pour chaque partie de l'avion
 const svgPaths = {
     nose: new URL('../../public/assets/svg/nez_avion.svg', import.meta.url).href,
     body: new URL('../../public/assets/svg/corps_avion.svg', import.meta.url).href,
@@ -9,11 +9,18 @@ const svgPaths = {
     tailAilerons: new URL('../../public/assets/svg/queue_ailerons_avion.svg', import.meta.url).href
 };
 
-// Charger les données
-d3.json('/assets/data/Damage.json').then(data => {
-    initVisualization(data[1]); // Utiliser le deuxième objet du JSON pour les pourcentages
-}).catch(error => console.error("Erreur lors du chargement des données :", error));
+// Charger les données JSON
+d3.json('/assets/data/Damage.json')
+    .then(data => {
+        if (!data || data.length === 0) {
+            console.error("Les données sont vides ou mal formatées.");
+            return;
+        }
+        initVisualization(data[1]); // Utiliser le deuxième objet du JSON pour les pourcentages
+    })
+    .catch(error => console.error("Erreur lors du chargement des données :", error));
 
+// Fonction pour initialiser la visualisation
 function initVisualization(data) {
     const svg = d3.select("#aircraft-visualization")
         .append("svg")
@@ -26,7 +33,7 @@ function initVisualization(data) {
     svg.append("image")
         .attr("href", svgPaths.nose)
         .attr("class", "nose")
-        .attr("x", 300) // Ajustez les coordonnées selon votre besoin
+        .attr("x", 300)
         .attr("y", 50)
         .attr("width", 200)
         .attr("height", 100)
@@ -36,7 +43,7 @@ function initVisualization(data) {
     svg.append("image")
         .attr("href", svgPaths.body)
         .attr("class", "body")
-        .attr("x", 250) // Ajustez les coordonnées selon votre besoin
+        .attr("x", 250)
         .attr("y", 150)
         .attr("width", 300)
         .attr("height", 200)
@@ -46,33 +53,34 @@ function initVisualization(data) {
     svg.append("image")
         .attr("href", svgPaths.engines)
         .attr("class", "engines")
-        .attr("x", 200) // Ajustez les coordonnées selon votre besoin
+        .attr("x", 200)
         .attr("y", 200)
         .attr("width", 400)
         .attr("height", 100)
         .on("click", () => handlePartClick("engines", data));
 
-    // Ailes (ensemble)
+    // Ailes
     svg.append("image")
         .attr("href", svgPaths.wings)
         .attr("class", "wings")
-        .attr("x", 100) // Ajustez les coordonnées selon votre besoin
+        .attr("x", 100)
         .attr("y", 250)
         .attr("width", 600)
         .attr("height", 150)
         .on("click", () => handlePartClick("wings", data));
 
-    // Queue et ailerons (ensemble)
+    // Queue et ailerons
     svg.append("image")
         .attr("href", svgPaths.tailAilerons)
         .attr("class", "tail-ailerons")
-        .attr("x", 350) // Ajustez les coordonnées selon votre besoin
+        .attr("x", 350)
         .attr("y", 400)
         .attr("width", 100)
         .attr("height", 150)
         .on("click", () => handlePartClick("tail-ailerons", data));
 }
 
+// Fonction pour gérer les clics sur les parties de l'avion
 function handlePartClick(part, data) {
     // Réinitialiser les couleurs
     d3.selectAll("image").attr("opacity", 1);
