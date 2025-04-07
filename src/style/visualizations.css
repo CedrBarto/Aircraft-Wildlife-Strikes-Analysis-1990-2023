@@ -313,7 +313,7 @@
 .bird-image {
     max-width: 300px;
     max-height: 250px;
-    width:fit-content;5
+    width:fit-content;
     height:fit-content;
     object-fit: contain;
     transition: all 0.3s ease-in-out;
@@ -402,4 +402,16 @@
 .bird-item.current {
     opacity: 1;
     filter: none;
+}
+
+#info-box {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+    background-color: #f9f9f9;
+}
+
+path {
+    cursor: pointer;
+    transition: fill 0.3s ease;
 }
