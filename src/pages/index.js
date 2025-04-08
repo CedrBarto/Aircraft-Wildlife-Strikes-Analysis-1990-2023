@@ -1,5 +1,6 @@
 import BirdStrikePeriods from '../components/birdStrikePeriods.js';
 import Species from '../components/species.js';
+import AircraftDamages from '../components/aircraftDamages.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialisation de BirdStrikePeriods
@@ -17,4 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Species container not found');
     }
+
+    // Initialiser la visualisation des dommages d'avion
+  const aircraftDamagesContainer = document.getElementById('aircraft-damages-container');
+  if (aircraftDamagesContainer) {
+    console.log('Initialisation de la visualisation des dommages d\'avion');
+    new AircraftDamages(aircraftDamagesContainer);
+  } else {
+    console.error('Container aircraft-damages-container non trouvé');
+  }
 });
