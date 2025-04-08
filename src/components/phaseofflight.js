@@ -335,7 +335,16 @@ phases.forEach((phase, phaseIndex) => {
         })
         .on("click", () => {
             currentPhase = phaseIndex;
-            updatePositions(i);
+            // Afficher les données de la phase cliquée
+            d3.select(`.phase-${phaseIndex} .incidents-count`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
+            d3.select(`.phase-${phaseIndex} .incidents-percentage`)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1);
+            updatePositions(phaseIndex);
         });
 });
 
@@ -407,12 +416,4 @@ phases.forEach((phase, i) => {
             // Animer l'avion vers cette phase
             animateToPhase(i);
         });
-});
-
-// Modifier le code du clic sur les carrés pour utiliser la même animation
-squares.on("click", () => {
-    currentPhase = phaseIndex;
-    
-    // Animer l'avion vers cette phase
-    animateToPhase(phaseIndex);
 });
