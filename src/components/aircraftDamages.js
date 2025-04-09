@@ -1,451 +1,356 @@
-import * as d3 from 'd3';
+import * as d3 from "d3";
 
 const svgUrls = {
-  aileGauche: new URL('../../public/assets/svg/aile_gauche_avion.svg', import.meta.url).href,
-  aileDroite: new URL('../../public/assets/svg/aile_droite_avion.svg', import.meta.url).href,
-  corps: new URL('../../public/assets/svg/corps_avion.svg', import.meta.url).href,
-  nez: new URL('../../public/assets/svg/nez_avion.svg', import.meta.url).href,
-  aileronsQueues: new URL('../../public/assets/svg/aileronsQueues_avion.svg', import.meta.url).href,
-  // Ajout des nouveaux SVG pour les moteurs
-  moteurGauche: new URL('../../public/assets/svg/moteurs_gauche.svg', import.meta.url).href,
-  moteurDroit: new URL('../../public/assets/svg/moteurs_droit.svg', import.meta.url).href
+  aileGauche: new URL(
+    "../../public/assets/svg/aile_gauche_avion.svg",
+    import.meta.url
+  ).href,
+  aileDroite: new URL(
+    "../../public/assets/svg/aile_droite_avion.svg",
+    import.meta.url
+  ).href,
+  corps: new URL("../../public/assets/svg/corps_avion.svg", import.meta.url)
+    .href,
+  nez: new URL("../../public/assets/svg/nez_avion.svg", import.meta.url).href,
+  aileronsQueues: new URL(
+    "../../public/assets/svg/aileronsQueues_avion.svg",
+    import.meta.url
+  ).href,
+  moteurGauche: new URL(
+    "../../public/assets/svg/moteurs_gauche.svg",
+    import.meta.url
+  ).href,
+  moteurDroit: new URL(
+    "../../public/assets/svg/moteurs_droit.svg",
+    import.meta.url
+  ).href,
 };
 
 class AircraftDamages {
   constructor(container) {
     this.container = container;
     this.selectedPart = null;
-    
+
     // Données simulées sur les dommages par partie d'avion
     this.damageData = {
-      'aile_gauche': {
-        name: 'Aile gauche',
+      aile_gauche: {
+        name: "Aile gauche",
         strikes: 2345,
-        percentage: '23%',
-        description: "L'aile gauche est particulièrement vulnérable lors du décollage et de l'atterrissage.",
-        color: '#4287f5'
+        percentage: "23%",
+        description:
+          "L'aile gauche est particulièrement vulnérable lors du décollage et de l'atterrissage.",
+        color: "#4287f5",
       },
-      'aile_droite': {
-        name: 'Aile droite',
+      aile_droite: {
+        name: "Aile droite",
         strikes: 2256,
-        percentage: '22%',
-        description: "L'aile droite subit des impacts similaires à l'aile gauche.",
-        color: '#4287f5'
+        percentage: "22%",
+        description:
+          "L'aile droite subit des impacts similaires à l'aile gauche.",
+        color: "#4287f5",
       },
-      'corps': {
-        name: 'Corps de l\'avion',
+      corps: {
+        name: "Corps de l'avion",
         strikes: 1547,
-        percentage: '15%',
+        percentage: "15%",
         description: "Le fuselage est moins touché que les autres parties.",
-        color: '#42b9f5'
+        color: "#42b9f5",
       },
-      'nez': {
-        name: 'Nez',
+      nez: {
+        name: "Nez",
         strikes: 872,
-        percentage: '8%',
-        description: "Le nez de l'avion, y compris le radar et les capteurs, est vulnérable aux impacts directs.",
-        color: '#42c9f5'
+        percentage: "8%",
+        description:
+          "Le nez de l'avion, y compris le radar et les capteurs, est vulnérable aux impacts directs.",
+        color: "#42c9f5",
       },
-      'aileronsQueues': {
-        name: 'Ailerons et queue',
+      aileronsQueues: {
+        name: "Ailerons et queue",
         strikes: 210,
-        percentage: '2%',
-        description: "Les ailerons et la queue sont les parties les moins touchées par les impacts d'oiseaux.",
-        color: '#42f59e'
+        percentage: "2%",
+        description:
+          "Les ailerons et la queue sont les parties les moins touchées par les impacts d'oiseaux.",
+        color: "#42f59e",
       },
-      'moteur_gauche': {
-        name: 'Moteur gauche',
+      moteur_gauche: {
+        name: "Moteur gauche",
         strikes: 1683,
-        percentage: '16%',
-        description: "Le moteur gauche est particulièrement exposé lors des phases d'approche et de décollage.",
-        color: '#f54242'
+        percentage: "16%",
+        description:
+          "Le moteur gauche est particulièrement exposé lors des phases d'approche et de décollage.",
+        color: "#f54242",
       },
-      'moteur_droit': {
-        name: 'Moteur droit',
+      moteur_droit: {
+        name: "Moteur droit",
         strikes: 1443,
-        percentage: '14%',
-        description: "Le moteur droit subit des impacts similaires au moteur gauche, souvent avec des conséquences graves.",
-        color: '#f54242'
-      }
+        percentage: "14%",
+        description:
+          "Le moteur droit subit des impacts similaires au moteur gauche, souvent avec des conséquences graves.",
+        color: "#f54242",
+      },
     };
-    
+
     this.init();
   }
 
   init() {
     // Vider le conteneur
-    this.container.innerHTML = '';
-    
+    this.container.innerHTML = "";
+
     // Utiliser D3 pour créer le titre et le sous-titre
     d3.select(this.container)
-      .append('h2')
-      .attr('class', 'visualization-title')
-      .text('Parties de l\'avion touchées par les impacts');
-      
+      .append("h2")
+      .attr("class", "visualization-title")
+      .text("Parties de l'avion touchées par les impacts");
+
     d3.select(this.container)
-      .append('p')
-      .attr('class', 'visualization-subtitle')
-      .text('Survolez les différentes parties de l\'avion pour voir les détails des impacts.');
-    
+      .append("p")
+      .attr("class", "visualization-subtitle")
+      .text(
+        "Survolez les différentes parties de l'avion pour voir les détails des impacts."
+      );
+
     // Créer un div pour la visualisation avec D3
-    const visualizationDiv = d3.select(this.container)
-      .append('div')
-      .attr('class', 'aircraft-visualization-container')
-      .style('display', 'flex')
-      .style('justify-content', 'space-between')
-      .style('margin-top', '30px')
+    const visualizationDiv = d3
+      .select(this.container)
+      .append("div")
+      .attr("class", "aircraft-visualization-container")
+      .style("display", "flex")
+      .style("justify-content", "space-between")
+      .style("margin-top", "30px")
       .node();
-    
+
     // Créer un conteneur pour l'avion avec D3
-    const aircraftDiv = d3.select(visualizationDiv)
-      .append('div')
-      .attr('class', 'aircraft-view')
-      .style('width', '60%')
-      .style('position', 'relative')
-      .style('height', '400px')
+    const aircraftDiv = d3
+      .select(visualizationDiv)
+      .append("div")
+      .attr("class", "aircraft-view")
+      .style("width", "60%")
+      .style("position", "relative")
+      .style("height", "400px")
       .node();
-    
+
     // Créer un panneau d'information avec D3
-    const infoPanel = d3.select(visualizationDiv)
-      .append('div')
-      .attr('class', 'info-panel')
-      .style('width', '35%')
-      .style('border', '1px solid #ddd')
-      .style('border-radius', '8px')
-      .style('padding', '20px')
-      .style('background-color', '#f9f9f9')
+    const infoPanel = d3
+      .select(visualizationDiv)
+      .append("div")
+      .attr("class", "info-panel")
+      .style("width", "35%")
+      .style("border", "1px solid #ddd")
+      .style("border-radius", "8px")
+      .style("padding", "20px")
+      .style("background-color", "#f9f9f9")
       .node();
-    
+
     this.infoPanel = infoPanel;
-    
-    // Créer l'avion avec ses parties
-    this.createAircraftWithParts(aircraftDiv);
-    
-    // Charger les images puis configurer les événements
-    this.loadImages().then(() => {
-      this.setupEvents();
-      console.log("Événements configurés pour l'avion");
-    });
-  }
 
-  loadImages() {
-    console.log("Chargement des images SVG...");
-    
-    // Charger toutes les images SVG avant de configurer les événements
-    const imagePromises = Object.values(svgUrls).map(url => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          console.log(`Image chargée: ${url}`);
-          resolve();
-        };
-        img.onerror = () => {
-          console.error(`Erreur de chargement de l'image: ${url}`);
-          resolve(); // Résoudre quand même pour ne pas bloquer
-        };
-        img.src = url;
-      });
-    });
-    
-    return Promise.all(imagePromises);
-  }
+    // Créer l'avion avec ses parties en SVG natif
+    this.createAircraftWithSVGParts(aircraftDiv);
 
-  createAircraftWithParts(container) {
-    // Créer les calques pour l'avion
-    const backgroundLayer = document.createElement('div');
-    backgroundLayer.style.position = 'absolute';
-    backgroundLayer.style.top = '0';
-    backgroundLayer.style.left = '0';
-    backgroundLayer.style.width = '100%';
-    backgroundLayer.style.height = '100%';
-    backgroundLayer.style.zIndex = '1';
-    
-    const partsLayer = document.createElement('div');
-    partsLayer.style.position = 'absolute';
-    partsLayer.style.top = '0';
-    partsLayer.style.left = '0';
-    partsLayer.style.width = '100%';
-    partsLayer.style.height = '100%';
-    partsLayer.style.zIndex = '2';
-    
-    // Définir les parties de l'avion et leurs propriétés
-    const parts = [
-      {
-        id: 'corps',
-        name: 'Corps de l\'avion',
-        src: svgUrls.corps,
-        style: {
-          position: 'absolute',
-          top: '12.8%',
-          left: '0%',
-          width: '100%',
-          height: '56%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '2'
-        },
-        hitArea: {
-          top: '0%',
-          left: '5%',
-          right: '5%',
-          width: '50%', 
-          height: '40%'
-        }
-      },
-      {
-        id: 'aile_gauche',
-        name: 'Aile gauche',
-        src: svgUrls.aileGauche,
-        style: {
-          position: 'absolute',
-          top: '31%',
-          left: '-13%',
-          width: '100%',
-          height: '37%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '3'
-        },
-        hitArea: {
-          top: '31%',
-          right: '0%',
-          width: '100%',
-          height: '37%'
-        }
-      },
-      {
-        id: 'aile_droite',
-        name: 'Aile droite',
-        src: svgUrls.aileDroite,
-        style: {
-          position: 'absolute',
-          top: '31%',
-          left: '13%',
-          width: '100%',
-          height: '37%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '3'
-        },
-        hitArea: {
-          top: '31%', 
-          left: '13%',
-          width: '100%',
-          height: '37%'
-        }
-      },
-      // Ajout du moteur gauche
-      {
-        id: 'moteur_gauche',
-        name: 'Moteur gauche',
-        src: svgUrls.moteurGauche,
-        style: {
-          position: 'absolute',
-          top: '28.2%',
-          left: '-13%',
-          width: '100%',
-          height: '30%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '4'
-        },
-        hitArea: {
-          top: '28.2%',
-          left: '20%',
-          width: '15%',
-          height: '15%'
-        }
-      },
-      // Ajout du moteur droit
-      {
-        id: 'moteur_droit',
-        name: 'Moteur droit',
-        src: svgUrls.moteurDroit,
-        style: {
-          position: 'absolute',
-          top: '28.2%',
-          left: '13%',
-          width: '100%',
-          height: '30%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '4'
-        },
-        hitArea: {
-          top: '40%',
-          right: '20%',
-          width: '15%',
-          height: '15%'
-        }
-      },
-      {
-        id: 'nez',
-        name: 'Nez',
-        src: svgUrls.nez,
-        style: {
-          position: 'absolute',
-          top: '1%',
-          left: '0%',
-          width: '100%',
-          height: '16.8%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '3'
-        },
-        hitArea: {
-          top: '3%',
-          left: '47%',
-          width: '7%',
-          height: '15%'
-        }
-      },
-      {
-        id: 'aileronsQueues',
-        name: 'Ailerons et queue',
-        src: svgUrls.aileronsQueues,
-        style: {
-          position: 'absolute',
-          top: '63%',
-          left: '-0.2%',
-          width: '100%',
-          height: '33%',
-          objectFit: 'contain',
-          cursor: 'pointer',
-          zIndex: '3'
-        },
-        hitArea: {
-          top: '65%',
-          left: '47%',
-          width: '6%',
-          height: '25%'
-        }
-      }
-    ];
-    
-    // Le reste du code reste inchangé
-    parts.forEach(part => {
-      // Conteneur pour l'image SVG
-      const partContainer = document.createElement('div');
-      partContainer.className = 'aircraft-part-container';
-      partContainer.style.position = 'absolute';
-      partContainer.style.top = '0';
-      partContainer.style.left = '0';
-      partContainer.style.width = '100%';
-      partContainer.style.height = '100%';
-      partContainer.style.zIndex = part.style.zIndex;
-      partContainer.style.pointerEvents = 'none';
-      
-      // Image SVG
-      const partImg = document.createElement('img');
-      partImg.className = 'aircraft-part';
-      partImg.id = `part-${part.id}`;
-      partImg.src = part.src;
-      partImg.alt = part.name;
-      partImg.setAttribute('data-part', part.id);
-      
-      // Appliquer les styles
-      Object.entries(part.style).forEach(([property, value]) => {
-        partImg.style[property] = value;
-      });
-      
-      // Styles supplémentaires pour les parties
-      partImg.style.transition = 'all 0.3s ease';
-      partImg.style.opacity = '0.7';
-      partImg.style.pointerEvents = 'none'; // L'image ne reçoit pas d'événements
-      
-      // Ajouter l'image au conteneur
-      partContainer.appendChild(partImg);
-      
-      // Créer une zone cliquable (hit area) pour chaque partie
-      if (part.hitArea) {
-        const hitArea = document.createElement('div');
-        hitArea.className = 'hit-area';
-        hitArea.setAttribute('data-target', part.id);
-        hitArea.style.position = 'absolute';
-        hitArea.style.top = part.hitArea.top;
-        hitArea.style.left = part.hitArea.left;
-        hitArea.style.right = part.hitArea.right || 'auto';
-        hitArea.style.width = part.hitArea.width;
-        hitArea.style.height = part.hitArea.height;
-        hitArea.style.cursor = 'pointer';
-        hitArea.style.zIndex = '10'; // Au-dessus des images
-        hitArea.style.pointerEvents = 'auto'; // Reçoit les événements
-        
-        // Pour le débogage, décommentez cette ligne
-        // hitArea.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
-        
-        // Ajouter la zone cliquable au document
-        partsLayer.appendChild(hitArea);
-      }
-      
-      // Ajouter le conteneur de l'image
-      partsLayer.appendChild(partContainer);
-    });
-    
-    // Ajouter les calques au conteneur
-    container.appendChild(backgroundLayer);
-    container.appendChild(partsLayer);
-  }
-
-  setupEvents() {
-    const self = this;
-    console.log("Configuration des événements...");
-    
-    // Utiliser D3 pour sélectionner toutes les zones cliquables
-    const hitAreas = d3.selectAll('.hit-area');
-    console.log(`Nombre de zones cliquables trouvées: ${hitAreas.size()}`);
-    
-    // Utiliser D3 pour ajouter les événements
-    hitAreas.each(function() {
-      // Obtenir les données de la zone
-      const hitArea = d3.select(this);
-      const targetId = hitArea.attr('data-target');
-      
-      // Événement au survol avec D3
-      hitArea.on('mouseenter', function() {
-        console.log(`Survol détecté sur zone: ${targetId}`);
-        
-        if (!targetId || !self.damageData[targetId]) return;
-        
-        self.selectedPart = targetId;
-        self.updateInfoPanel(targetId);
-        
-        // Mettre à jour l'opacité des images avec D3
-        d3.selectAll('.aircraft-part').each(function() {
-          const partElement = d3.select(this);
-          const partId = partElement.attr('data-part');
-          
-          if (partId === targetId) {
-            partElement.style('opacity', '1'); // Image survolée
-          } else {
-            partElement.style('opacity', '0.3'); // Autres images
-          }
-        });
-      });
-      
-      // Événement à la sortie avec D3
-      hitArea.on('mouseleave', function() {
-        console.log(`Sortie détectée sur zone: ${targetId}`);
-        
-        self.selectedPart = null;
-        self.resetInfoPanel();
-        
-        // Réinitialiser l'opacité de toutes les images avec D3
-        d3.selectAll('.aircraft-part').style('opacity', '0.7');
-      });
-    });
-    
     // Initialiser l'info panel avec le message par défaut
     this.resetInfoPanel();
+  }
+
+  // Nouvelle méthode pour créer l'avion avec des SVG natifs
+  createAircraftWithSVGParts(container) {
+    // Créer un SVG conteneur principal
+    const svgContainer = d3
+      .select(container)
+      .append("div")
+      .style("width", "100%")
+      .style("height", "120%")
+      .style("position", "relative");
+
+    // Créer le SVG principal
+    const svg = svgContainer
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .style("position", "absolute")
+      .style("top", "0")
+      .style("left", "0");
+
+    const self = this;
+
+    // Définir les parties de l'avion avec leurs positions
+    // Définir les parties de l'avion avec leurs positions
+    const parts = [
+      {
+        id: "corps",
+        name: "Corps de l'avion",
+        src: svgUrls.corps,
+        position: { x: 46, y: -105.5 },
+        scale: 1,
+        zIndex: 2,
+      },
+      {
+        id: "aile_gauche",
+        name: "Aile gauche",
+        src: svgUrls.aileGauche,
+        position: { x: -139.5, y: -30 },
+        scale: 1,
+        zIndex: 3,
+      },
+      {
+        id: "aile_droite",
+        name: "Aile droite",
+        src: svgUrls.aileDroite,
+        position: { x: 105, y: -30 },
+        scale: 1,
+        zIndex: 3,
+      },
+      {
+        id: "moteur_gauche",
+        name: "Moteur gauche",
+        src: svgUrls.moteurGauche,
+        position: { x: -52, y: -22 },
+        scale: 0.8,
+        zIndex: 4,
+      },
+      {
+        id: "moteur_droit",
+        name: "Moteur droit",
+        src: svgUrls.moteurDroit,
+        position: { x: 146, y: -21 },
+        scale: 0.8,
+        zIndex: 4,
+      },
+      {
+        id: "nez",
+        name: "Nez",
+        src: svgUrls.nez,
+        position: { x: 50, y:-159.8 },
+        scale: 1,
+        zIndex: 3,
+      },
+      {
+        id: "aileronsQueues",
+        name: "Ailerons et queue",
+        src: svgUrls.aileronsQueues,
+        position: { x: 8, y: 125.2 },
+        scale: 1,
+        zIndex: 3,
+      },
+    ];
+
+    // Créer un groupe SVG pour centrer l'avion
+    const aircraftGroup = svg
+      .append("g")
+      .attr("transform", "translate(250, 155)"); // Valeurs fixes au lieu de pourcentages
+
+    // Charger tous les SVG et les ajouter au conteneur
+    Promise.all(
+      parts.map((part) => {
+        return fetch(part.src)
+          .then((response) => response.text())
+          .then((svgText) => {
+            // Parser le SVG
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+
+            // Extraire le viewBox pour le scaling
+            const originalSvg = svgDoc.querySelector("svg");
+            const viewBox =
+              originalSvg.getAttribute("viewBox") || "0 0 100 100";
+
+            // Créer un groupe pour cette partie
+            const partGroup = aircraftGroup
+              .append("g")
+              .attr("id", `part-${part.id}`)
+              .attr("class", "aircraft-part")
+              .attr("data-part", part.id)
+              .style("cursor", "pointer")
+              .style("opacity", 0.7)
+              .attr(
+                "transform",
+                `translate(${part.position.x}, ${part.position.y}) scale(${part.scale})`
+              )
+              .style("transition", "all 0.3s ease");
+
+            // Extraire tous les éléments du SVG (chemins, polygones, etc.)
+            const elements = svgDoc.querySelectorAll(
+              "path, polygon, rect, circle, ellipse, line, polyline"
+            );
+
+            // Ajouter chaque élément au groupe
+            elements.forEach((el) => {
+              // Cloner l'élément
+              const clonedNode = document.importNode(el, true);
+
+              // Ajouter au groupe SVG
+              partGroup.node().appendChild(clonedNode);
+            });
+
+            // Ajouter les événements d'interaction
+            partGroup
+              .on("mouseenter", function () {
+                const partId = d3.select(this).attr("data-part");
+                console.log(`Survol détecté sur: ${partId}`);
+
+                if (!partId || !self.damageData[partId]) return;
+
+                self.selectedPart = partId;
+                self.updateInfoPanel(partId);
+
+                // Mettre en évidence la partie survolée
+                d3.selectAll(".aircraft-part").each(function () {
+                  const thisPart = d3.select(this);
+                  if (thisPart.attr("data-part") === partId) {
+                    thisPart.style("opacity", 1);
+                    thisPart.style(
+                      "filter",
+                      `drop-shadow(0 0 5px ${self.damageData[partId].color})`
+                    );
+                  } else {
+                    thisPart.style("opacity", 0.3);
+                  }
+                });
+              })
+              .on("mouseleave", function () {
+                const partId = d3.select(this).attr("data-part");
+                console.log(`Sortie détectée sur: ${partId}`);
+
+                self.selectedPart = null;
+                self.resetInfoPanel();
+
+                // Réinitialiser toutes les parties
+                d3.selectAll(".aircraft-part")
+                  .style("opacity", 0.7)
+                  .style("filter", null);
+              });
+
+            return partGroup;
+          })
+          .catch((error) => {
+            console.error(
+              `Erreur lors du chargement du SVG ${part.id}:`,
+              error
+            );
+          });
+      })
+    ).then(() => {
+      console.log("Tous les SVG ont été chargés et ajoutés");
+
+      // Ordonner les parties par z-index
+      svg.selectAll(".aircraft-part").sort((a, b) => {
+        const partA = parts.find(
+          (p) => p.id === d3.select(a).attr("data-part")
+        );
+        const partB = parts.find(
+          (p) => p.id === d3.select(b).attr("data-part")
+        );
+        return partA.zIndex - partB.zIndex;
+      });
+    });
   }
 
   updateInfoPanel(partId) {
     // Utiliser D3 pour mettre à jour le panneau d'information
     const data = this.damageData[partId];
-    
+
     // Vider le panneau
     d3.select(this.infoPanel).html("");
-    
+
     // Ajouter l'indicateur de couleur
     d3.select(this.infoPanel)
       .append("div")
@@ -453,25 +358,26 @@ class AircraftDamages {
       .style("background-color", data.color)
       .style("border-radius", "3px")
       .style("margin-bottom", "15px");
-    
+
     // Ajouter le titre
     d3.select(this.infoPanel)
       .append("h3")
       .style("margin-top", "0")
       .style("color", "#2c3e50")
       .text(data.name);
-    
+
     // Ajouter les statistiques
-    const stats = d3.select(this.infoPanel)
+    const stats = d3
+      .select(this.infoPanel)
       .append("div")
       .style("margin-bottom", "15px");
-    
-    stats.append("p")
+
+    stats
+      .append("p")
       .html(`<strong>Nombre d'impacts:</strong> ${data.strikes}`);
-    
-    stats.append("p")
-      .html(`<strong>Pourcentage:</strong> ${data.percentage}`);
-    
+
+    stats.append("p").html(`<strong>Pourcentage:</strong> ${data.percentage}`);
+
     // Ajouter la description
     d3.select(this.infoPanel)
       .append("p")
@@ -483,7 +389,7 @@ class AircraftDamages {
   resetInfoPanel() {
     // Utiliser D3 pour réinitialiser le panneau d'information
     d3.select(this.infoPanel).html("");
-    
+
     d3.select(this.infoPanel)
       .append("div")
       .attr("class", "default-info")
@@ -494,7 +400,9 @@ class AircraftDamages {
       .style("color", "#7f8c8d")
       .style("text-align", "center")
       .append("p")
-      .text("Passez votre souris sur une partie de l'avion pour voir les détails des impacts.");
+      .text(
+        "Passez votre souris sur une partie de l'avion pour voir les détails des impacts."
+      );
   }
 }
 
