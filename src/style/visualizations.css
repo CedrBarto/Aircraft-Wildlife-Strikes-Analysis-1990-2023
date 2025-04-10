@@ -1,14 +1,20 @@
+/* Ajout de la police Verdana globalement */
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 /* Styles généraux */
 .visualization-section {
-    margin: 40px 0;
+    margin: 60px 0;
+    padding: 20px;
 }
 
 .visualization-container {
-    margin: 2rem auto;
-    padding: 2rem;
+    margin: 3rem auto;
+    padding: 2.5rem;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
 }
 
 /* Layout for bird strike visualization */
@@ -22,7 +28,6 @@
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .right-panel {
@@ -87,7 +92,6 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.2s ease;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -176,7 +180,6 @@
 }
 
 .percent-display {
-    font-family: sans-serif;
     font-weight: bold;
     transition: all 1s ease;
 }
@@ -225,11 +228,9 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .container .title {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 42px;
     color: #00C2CB;
     text-align: center;
@@ -238,7 +239,6 @@
 }
 
 .container .subtitle {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
     color: #666;
     text-align: center;
@@ -249,7 +249,6 @@
 }
 
 #visualization {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: block;
     justify-content: center;
     align-items: center;
@@ -259,19 +258,16 @@
 }
 
 .phase-label {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 14px;
     fill: #333;
 }
 
 .incidents-count {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
     font-weight: bold;
 }
 
 .incidents-percentage {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 14px;
 }
 
@@ -282,12 +278,10 @@
 /* Styles pour le carousel des espèces */
 .species-container {
     min-height: 600px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #00C2CB;
 }
 
 .species-container .title {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #00C2CB;
     font-size: 42px;
     text-align: center;
@@ -296,7 +290,6 @@
 }
 
 .species-container .subtitle {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #333;
     font-size: 16px;
     line-height: 1.5;
@@ -331,7 +324,6 @@
     justify-content: center;
     padding: 20px;
     height: 400px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .bird-image {
@@ -361,7 +353,6 @@
     font-size: 18px;
     color: #333;
     font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .nav-button {
@@ -399,7 +390,6 @@
     display: flex;
     justify-content: center;
     gap: 3rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .stat-container {
@@ -417,14 +407,12 @@
     font-size: 18px;
     font-weight: normal;
     color: #333;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .stat-label {
     font-size: 14px;
     color: #666;
     margin-bottom: 4px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Transitions pour les images */
@@ -504,6 +492,7 @@
 #flightProgress:hover::-moz-range-thumb {
     background: #00C2CB;
 }
+<<<<<<< HEAD
 /* visualisation.css */
 .bubble-map-container {
     width: 100%;
@@ -520,3 +509,86 @@
     background-color: #1a1a1a;
     border-radius: 4px;
   }
+=======
+
+/* Styles spécifiques pour la visualisation de l'avion */
+.aircraft-visualization-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px; /* Augmenté de 40px à 60px */
+    padding: 20px 0;
+}
+
+.visualization-title {
+    color: #00C2CB;
+    font-size: 32px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.visualization-subtitle {
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 50px; /* Augmenté de 30px à 50px */
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+/* Style pour la vue de l'avion */
+.aircraft-view {
+    width: 60%;
+    position: relative;
+    height: 450px !important; /* Augmenter la hauteur */
+    margin-right: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style pour le panneau d'information */
+.info-panel {
+    width: 35%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    background-color: #f9f9f9;
+    height: auto;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Style pour les parties de l'avion */
+.aircraft-part {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.aircraft-part:hover {
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 8px rgba(0, 194, 203, 0.8));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .aircraft-visualization-container {
+        flex-direction: column;
+    }
+    
+    .aircraft-view, .info-panel {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .aircraft-view {
+        height: 350px !important;
+        margin-bottom: 20px;
+    }
+}
+>>>>>>> 29dd701a69572837aa7acb02788e7f7298679948
