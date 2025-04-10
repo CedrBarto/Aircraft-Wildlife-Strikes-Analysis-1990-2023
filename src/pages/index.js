@@ -1,6 +1,9 @@
 import BirdStrikePeriods from '../components/birdStrikePeriods.js';
 import Species from '../components/species.js';
 import AircraftDamages from '../components/aircraftDamages.js';
+import BubbleMap  from '../components/bubbleMap.js'; // Assurez-vous que le chemin est correct
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialisation de BirdStrikePeriods
@@ -27,4 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('Container aircraft-damages-container non trouvé');
   }
+
+     // Initialiser la visualisation des dommages d'avion
+     const bubbleMapContainer = document.getElementById('bubble-map-container');
+     if (bubbleMapContainer) {
+       console.log('Initialisation de la visualisation des dommages d\'avion');
+       new BubbleMap(bubbleMapContainer);
+     } else {
+       console.error('Container aircraft-damages-container non trouvé');
+     }
+
+
 });

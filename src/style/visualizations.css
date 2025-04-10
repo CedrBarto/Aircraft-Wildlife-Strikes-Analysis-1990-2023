@@ -504,3 +504,19 @@
 #flightProgress:hover::-moz-range-thumb {
     background: #00C2CB;
 }
+/* visualisation.css */
+.bubble-map-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bubble-map-container svg {
+    background-color: #1a1a1a;
+    border-radius: 4px;
+  }
