@@ -7,6 +7,7 @@
 .visualization-section {
     margin: 60px 0;
     padding: 20px;
+    text-align: center;
 }
 
 .visualization-container {
@@ -227,7 +228,6 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
 }
 
 .container .title {
@@ -492,24 +492,6 @@
 #flightProgress:hover::-moz-range-thumb {
     background: #00C2CB;
 }
-<<<<<<< HEAD
-/* visualisation.css */
-.bubble-map-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .bubble-map-container svg {
-    background-color: #1a1a1a;
-    border-radius: 4px;
-  }
-=======
 
 /* Styles spécifiques pour la visualisation de l'avion */
 .aircraft-visualization-container {
@@ -531,7 +513,7 @@
     color: #666;
     font-size: 16px;
     text-align: center;
-    margin-bottom: 50px; /* Augmenté de 30px à 50px */
+    margin-bottom: 50px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -591,4 +573,30 @@
         margin-bottom: 20px;
     }
 }
->>>>>>> 29dd701a69572837aa7acb02788e7f7298679948
+
+#bubble-map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 120vh;
+}
+
+.controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.year-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00C2CB;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.year-button:hover {
+    background-color: #009B9B;
+}
