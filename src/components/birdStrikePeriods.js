@@ -182,6 +182,9 @@ export default class BirdStrikePeriods {
     
     // Démarrer l'animation des nuages
     this.startCloudsAnimation();
+    
+    // Démarrer l'animation de flottement de l'avion
+    this.startAirplaneFloatingAnimation();
   }
   
   tryCreateSVGElements(cloudPlaneGroup) {
@@ -197,8 +200,8 @@ export default class BirdStrikePeriods {
       // Séparer l'avion du groupe de nuages pour qu'il reste fixe
       // Créer un groupe séparé pour l'avion
       const airplaneGroup = this.sceneGroup.append('g')
-        .attr('class', 'airplane-group')
-        .attr('transform', 'translate(0, 0)');  // Position centrale fixe
+      .attr('class', 'airplane-group')
+      .attr('transform', 'translate(0, -60)');  // Déplacé vers le haut de 60px
 
       // Far left cloud - écarté davantage vers la gauche
       const farLeftCloud = cloudPlaneGroup.append('image')
@@ -223,14 +226,13 @@ export default class BirdStrikePeriods {
       // Airplane - positionné au centre et orienté vers la droite - AGRANDI DAVANTAGE
       // Maintenant dans son propre groupe et non plus avec les nuages
       const airplane = airplaneGroup.append('image')
-        .attr('href', planeUrl)
-        .attr('width', 260)  // Augmenté de 200 à 260
-        .attr('height', 98)  // Augmenté de 75 à 98
-        .attr('x', -130)     // Ajusté pour le centrage
-        .attr('y', -32)      // Ajusté pour l'alignement vertical
-        .attr('class', 'airplane')
-        // Orienté vers la droite (symétrie horizontale)
-        .style('transform', 'scaleX(-1)');
+      .attr('href', planeUrl)
+      .attr('width', 320)  // Maintenu à 320 comme demandé
+      .attr('height', 120)  // Maintenu à 120
+      .attr('x', -160)     // Centre horizontal (-width/2)
+      .attr('y', -180)      // Position verticale légèrement ajustée
+      .attr('class', 'airplane')
+      .style('transform', 'scaleX(-1)'); // Inversé horizontalement
       
       // Right cloud - principal nuage à droite
       const rightCloud = cloudPlaneGroup.append('image')
@@ -480,7 +482,7 @@ export default class BirdStrikePeriods {
 
     if (period === 'night') {
       this.moon
-        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('x', 60)  // Déplacé de 60 à 120 pour être plus à droite
         .attr('y', -this.height/2 + 30)
         .transition()
         .duration(1000)
@@ -558,77 +560,34 @@ export default class BirdStrikePeriods {
     }
   }
   
-  // Ajouter cette nouvelle méthode pour gérer l'animation
-  startCloudsAnimation() {
-    const self = this;
-    const viewWidth = parseInt(this.svg.style('width')) || 1200; // Largeur du SVG
+  // Ajouter cette méthode à votre classe BirdStrikePeriods
+
+  startAirplaneFloatingAnimation() {
+    const airplaneGroup = d3.select('.airplane-group');
     
-    // 1. Animation des nuages décoratifs
-    this.decorativeClouds.forEach(cloud => {
-      const width = parseFloat(cloud.attr('width'));
-      const duration = 7000 + Math.random() * 5000; // Entre 7 et 12 secondes
+    // Vérifier que le groupe d'avion existe
+    if (airplaneGroup.empty()) return;
+    
+    // Sauvegarder la rotation actuelle
+    const currentRotation = this.getPlaneRotation(this.currentPeriod);
+    
+    // Créer un timer d3 pour animer en continu
+    d3.timer((elapsed) => {
+      // Créer un effet de flottement vertical avec une amplitude de 8px
+      const yOffset = Math.sin(elapsed / 1000) * 8;
       
-      function moveDecorativeCloud() {
-        cloud
-          .interrupt() // Interrompre toute transition en cours
-          .transition()
-          .duration(duration)
-          .ease(d3.easeLinear) // Mouvement linéaire
-          .attr('x', -width - 100) // Déplacer hors de l'écran à gauche
-          .on('end', function() {
-            // Replacer à droite instantanément et recommencer
-            d3.select(this)
-              .attr('x', viewWidth)
-              .call(moveDecorativeCloud);
-          });
+      // Léger mouvement horizontal pour plus de réalisme
+      const xOffset = Math.sin(elapsed / 1500) * 3;
+      
+      // Appliquer la transformation: combinaison de la translation et de la rotation
+      airplaneGroup.attr('transform', `translate(${xOffset}, ${yOffset}) rotate(${currentRotation})`);
+      
+      // Mettre à jour la rotation si la période change
+      if (this.currentPeriod && this.getPlaneRotation(this.currentPeriod) !== currentRotation) {
+        return true; // Arrête ce timer pour permettre la transition de rotation
       }
       
-      // Position initiale aléatoire
-      cloud.attr('x', Math.random() * viewWidth);
-      
-      // Démarrer avec un léger délai
-      setTimeout(() => {
-        moveDecorativeCloud();
-      }, Math.random() * 1000);
-    });
-    
-    // 2. Animation des nuages principaux
-    const mainClouds = [
-      '.far-left-cloud', 
-      '.left-cloud', 
-      '.right-cloud', 
-      '.far-right-cloud'
-    ];
-    
-    mainClouds.forEach((selector, index) => {
-      const cloud = d3.select(selector);
-      if (cloud.empty()) return; // S'assurer que le nuage existe
-      
-      const width = parseFloat(cloud.attr('width'));
-      const duration = 10000 + (index * 2000) + Math.random() * 3000; // Durées variées selon le nuage
-      
-      function moveMainCloud() {
-        cloud
-          .interrupt() // Interrompre toute transition en cours
-          .transition()
-          .duration(duration)
-          .ease(d3.easeLinear) // Mouvement linéaire
-          .attr('x', -width - 200) // Déplacer hors écran à gauche 
-          .on('end', function() {
-            // Replacer à droite instantanément et recommencer
-            d3.select(this)
-              .attr('x', viewWidth)
-              .call(moveMainCloud);
-          });
-      }
-      
-      // Position initiale décalée
-      cloud.attr('x', 100 + (index * 200) + Math.random() * 100);
-      
-      // Démarrer avec un délai progressif
-      setTimeout(() => {
-        moveMainCloud();
-      }, index * 500);
+      return false; // Continue l'animation
     });
   }
 
@@ -761,7 +720,7 @@ export default class BirdStrikePeriods {
     // Transitions pour la lune
     if (toPeriod === 'night') {
       this.moon
-        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('x', 100)  // Déplacé de 60 à 120 pour être plus à droite
         .attr('y', -this.height/2 + 30)
         .transition()
         .duration(this.transitionDuration)
