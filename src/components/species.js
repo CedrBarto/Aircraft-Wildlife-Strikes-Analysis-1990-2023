@@ -121,7 +121,7 @@ export default class Species {
     // Sous-titre
     mainContainer.append('p')
       .attr('class', 'subtitle')
-      .text('While the number and size of the birds can escalate the potential impact to an aircraft, it also makes a difference where the birds impact the aircraft.');
+      .text('Derrière chaque collision, il y a une histoire : celle d’un vol d’oiseaux, d’une route aérienne et d’un instant où leurs chemins se sont croisés.');
 
     // Carousel container
     this.carouselContainer = mainContainer.append('div')

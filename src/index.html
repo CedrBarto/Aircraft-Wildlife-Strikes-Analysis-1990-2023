@@ -12,17 +12,27 @@
     <script type="module" src="/components/header.js"></script>
     <script type="module" src="/components/phaseOfFlight.js"></script>
     <script type="module" src="/pages/index.js"></script>
+    <script type="module" src="/components/bubbleMap.js"></script>
 
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    
 </head>
 <body>
 
     <main>
 
+        <section class="visualization-section">
+            <!-- Container pour la visualisation des dommages d'avion -->
+            <div id="aircraft-damages-container" class="visualization-container">
+                <!-- Le contenu sera généré par D3.js -->
+            </div>
+        </section>
+
         <div class="container">
             <h1 class="title">Impacts pour chaque phase de vol</h1>
-            <p class="subtitle">Coup dur pour les oiseaux lors de l'approche, c'est durant cette phase que les impacts sont les plus fréquents.</p>
+            <p class="subtitle">Les collisions avec les oiseaux ne surviennent pas au hasard : elles sont beaucoup plus fréquentes lors de certaines phases du vol.</p>
             
             <div id="visualization"></div>
         </div>
@@ -40,20 +50,18 @@
                 <!-- Le contenu sera généré par D3.js -->
             </div>
         </section>
-
         <section class="visualization-section">
-            <!-- Container pour la visualisation des dommages d'avion -->
-            <div id="aircraft-damages-container" class="visualization-container">
-                <!-- Le contenu sera généré par D3.js -->
-            </div>
+            <div class="container">
+            <h1 class="title">Carte des collisions entre oiseaux et avions</h1>
+            <p class="subtitle">Cette carte affiche les impacts d'oiseaux sur les avions aux États-Unis entre 2020 et 2023.
+                Chaque bulle représente un incident à une localisation précise.
+                Le phénomène est particulièrement fréquent autour des aéroports et pendant les phases de décollage et d'atterrissage.</p>
+        
+            <div id="bubble-map-container">
+        </div>
+        </div>
         </section>
-
-        <section class="visualization-section">
-            <!-- Container pour la visualisation des dommages d'avion -->
-            <div id="bubble-map-container" class="visualization-container">
-                <!-- Le contenu sera généré par D3.js -->
-            </div>
-        </section>
+        
 
     </main>
     
