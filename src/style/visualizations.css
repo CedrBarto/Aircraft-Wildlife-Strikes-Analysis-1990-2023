@@ -596,7 +596,3 @@
     cursor: pointer;
     font-size: 16px;
 }
-
-.year-button:hover {
-    background-color: #009B9B;
-}

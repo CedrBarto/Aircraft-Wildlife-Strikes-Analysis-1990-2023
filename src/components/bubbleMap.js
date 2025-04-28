@@ -15,8 +15,8 @@ class BubbleMap {
   }
   
   init() {
-    this.createControls(); // D'abord créer les contrôles en haut
     this.createSvg(); // Ensuite créer le SVG pour la carte
+    this.createYear(); // Texte
     this.setupProjection();
     this.loadData();
   }
@@ -24,14 +24,14 @@ class BubbleMap {
   startCountdown() {
     setInterval(() => {
       this.changeYear('next');
-    }, 3500); // 5 secondes (5 000 ms)
+    }, 3000); 
   }
 
-  createControls() {
+  createYear() {
     // Créer le conteneur pour les contrôles
     const controlContainer = d3.select("#bubble-map-container")
       .append("div")
-      .attr("class", "controls")
+      .attr("class", "year")
       .style("margin-bottom", "15px");
 
     // Ajouter un conteneur pour afficher l'année courante
@@ -195,16 +195,7 @@ class BubbleMap {
     // Supprimer les bulles qui ne correspondent pas à l'année courante
     bubbles.exit().remove();
   }
-  
-  displayError(message) {
-    // Ajouter une méthode pour afficher les erreurs
-    d3.select("#bubble-map-container")
-      .append("div")
-      .attr("class", "error-message")
-      .style("color", "red")
-      .style("font-weight", "bold")
-      .text(message);
-  }
+
 }
 
 export default BubbleMap;
