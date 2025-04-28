@@ -19,28 +19,58 @@ const MOON_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
 	C104.178,31.004,82.991,5.644,54.431,0z"/>
 </svg>`;
 
+// Remplacer la définition existante du soleil par celle-ci
+const SUN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#FFE658" />
+</svg>`;
+
 // Convertir les SVG en URI data pour les utiliser dans les éléments image
 const cloudSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(CLOUD_SVG);
 const planeSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(PLANE_SVG);
 const moonSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(MOON_SVG);
+const sunSvgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(SUN_SVG);
+
+
+// Fonction pour créer un nuage décoratif avec position aléatoire
+function createDecorativeCloud(cloudPlaneGroup, cloudSvgUrl, index) {
+  // Positions aléatoires dans des plages définies
+  const xPos = Math.random() * 1200 - 600; // Entre -600 et 600
+  const yPos = Math.random() * 300 - 200;  // Entre -200 et 100
+  const scale = 0.3 + Math.random() * 0.4; // Entre 0.3 et 0.7
+  const opacity = 0.3 + Math.random() * 0.3; // Entre 0.3 et 0.6
+  
+  return cloudPlaneGroup.append('image')
+    .attr('href', cloudSvgUrl)
+    .attr('width', 200 * scale)
+    .attr('height', 150 * scale)
+    .attr('x', xPos)
+    .attr('y', yPos)
+    .attr('class', `decorative-cloud cloud-${index}`)
+    .style('opacity', opacity)
+    .attr('data-original-x', xPos); // Stocker la position originale pour l'animation
+}
 
 export default class BirdStrikePeriods {
   constructor(container) {
     this.container = container;
     this.periods = {
       dawn: { color: "#9393DC", label: "Aube", percent: 2, icon: "◐" },
-      day: { color: "#FFE658", label: "Jour", percent: 36, icon: "☀" },
+      day: { color: "#f7d61b", label: "Jour", percent: 36, icon: "☀" },
       dusk: { color: "#FF8158", label: "Crépuscule", percent: 44, icon: "◓" },
       night: { color: "#273A6C", label: "Nuit", percent: 18, icon: "☾" },
     };
     this.width = 800;
     this.height = 500;
     this.activeIndex = 0;
+    this.periodKeys = Object.keys(this.periods); // Liste des clés de périodes pour le défilement
+    this.periodDuration = 5000; // Durée d'affichage de chaque période en ms
+    this.transitionDuration = 2000; // Durée des transitions entre périodes
     
     // Stockage des URLs SVG en Data URI
     this.cloudSvgUrl = cloudSvgUrl;
     this.planeSvgUrl = planeSvgUrl;
     this.moonSvgUrl = moonSvgUrl;
+    this.sunSvgUrl = sunSvgUrl; // Utiliser le fichier importé
     
     this.init();
   }
@@ -48,8 +78,13 @@ export default class BirdStrikePeriods {
   init() {
     this.createLayout();
     this.createScene();
-    this.createButtons();
+    // Supprimé: this.createButtons();
     this.setActivePeriod('dawn');
+    
+    // Démarrer l'animation automatique des périodes après un court délai
+    setTimeout(() => {
+      this.startAutomaticTransition();
+    }, 1000);
   }
 
   createLayout() {
@@ -115,44 +150,6 @@ export default class BirdStrikePeriods {
       .text('18%');
   }
 
-  createButtons() {
-    // Create a separate div for buttons to ensure it's outside the content flow
-    const buttonsOuterContainer = d3.select(this.container)
-      .append('div')
-      .attr('class', 'period-buttons-container')
-      .style('text-align', 'center')
-      .style('width', '70%')
-      .style('position', 'relative')
-      .style('margin-top', '15px')
-      .style('margin-left', 'auto');
-    
-    // Create buttons container 
-    const buttonContainer = buttonsOuterContainer
-      .append('div')
-      .attr('class', 'period-buttons')
-      .style('display', 'inline-flex')
-      .style('justify-content', 'center')
-      .style('gap', '15px')
-      .style('margin', '0 auto');
-
-    // Create buttons for each period
-    Object.entries(this.periods).forEach(([period, data]) => {
-      // Create wrapper for consistent spacing
-      const button = buttonContainer
-        .append('div')
-        .attr('class', 'period-button-wrapper');
-      
-      // Create the actual button with icon and label
-      button.append('button')
-        .attr('class', 'period-button')
-        .attr('data-period', period)
-        .html(`<span class="period-icon ${period}-icon">${data.icon}</span><span>${data.label}</span>`)
-        .style('background-color', 'white')
-        .style('color', 'black')
-        .on('click', () => this.updatePeriod(period));
-    });
-  }
-
   createScene() {
     // Calculate center point
     const centerX = parseInt(this.svg.style('width')) / 2 || this.width / 2;
@@ -163,16 +160,28 @@ export default class BirdStrikePeriods {
       .attr('class', 'scene-group')
       .attr('transform', `translate(${centerX}, ${centerY})`);
     
-    // Create cloud group with airplane
+    // INVERSER CES DEUX LIGNES: D'abord créer le groupe des corps célestes
+    // Create celestial bodies group (créer en premier = en arrière-plan)
+    this.celestialGroup = this.sceneGroup.append('g')
+      .attr('class', 'celestial-group');
+      
+    // Puis ensuite créer le groupe des nuages et avion (créer après = au premier plan)
     const cloudPlaneGroup = this.sceneGroup.append('g')
       .attr('class', 'cloud-plane-group');
     
-    // Create celestial bodies group
-    this.celestialGroup = this.sceneGroup.append('g')
-      .attr('class', 'celestial-group');
-    
     // Try all possible SVG paths
     this.tryCreateSVGElements(cloudPlaneGroup);
+    
+    // Ajouter des nuages décoratifs supplémentaires (16 nuages)
+    const numClouds = 16;
+    this.decorativeClouds = [];
+    
+    for (let i = 0; i < numClouds; i++) {
+      this.decorativeClouds.push(createDecorativeCloud(cloudPlaneGroup, this.cloudSvgUrl, i));
+    }
+    
+    // Démarrer l'animation des nuages
+    this.startCloudsAnimation();
   }
   
   tryCreateSVGElements(cloudPlaneGroup) {
@@ -184,9 +193,13 @@ export default class BirdStrikePeriods {
     const planeUrl = this.planeSvgUrl;
     const moonUrl = this.moonSvgUrl;
     
-    console.log("Utilisation des URLs importées:", { cloudUrl, planeUrl, moonUrl });
-    
     try {
+      // Séparer l'avion du groupe de nuages pour qu'il reste fixe
+      // Créer un groupe séparé pour l'avion
+      const airplaneGroup = this.sceneGroup.append('g')
+        .attr('class', 'airplane-group')
+        .attr('transform', 'translate(0, 0)');  // Position centrale fixe
+
       // Far left cloud - écarté davantage vers la gauche
       const farLeftCloud = cloudPlaneGroup.append('image')
         .attr('href', cloudUrl)
@@ -208,7 +221,8 @@ export default class BirdStrikePeriods {
         .style('opacity', 0.9);
       
       // Airplane - positionné au centre et orienté vers la droite - AGRANDI DAVANTAGE
-      const airplane = cloudPlaneGroup.append('image')
+      // Maintenant dans son propre groupe et non plus avec les nuages
+      const airplane = airplaneGroup.append('image')
         .attr('href', planeUrl)
         .attr('width', 260)  // Augmenté de 200 à 260
         .attr('height', 98)  // Augmenté de 75 à 98
@@ -245,17 +259,26 @@ export default class BirdStrikePeriods {
         .attr('height', 96)  // Réduit de 120 à 96 pour garder le ratio
         .attr('class', 'moon')
         .style('opacity', 0);
+        
+      // Ajouter le soleil
+      this.sun = this.celestialGroup.append('image')
+        .attr('href', this.sunSvgUrl) // Utiliser l'URL importée
+        .attr('width', 120) // Plus grand pour être bien visible
+        .attr('height', 120)
+        .attr('x', 60)  // Position X
+        .attr('y', -this.height/2 + 20)  // Position Y légèrement plus haute
+        .attr('class', 'sun')
+        .style('opacity', 0)
+        .style('filter', 'drop-shadow(0 0 20px rgba(255, 220, 0, 0.9))'); // Halo plus intense
       
       // Vérification si les éléments ont été créés correctement
       const allElements = [farLeftCloud, leftCloud, airplane, rightCloud, farRightCloud];
       const svgCreated = allElements.every(el => el && !el.empty());
       
       if (svgCreated) {
-        console.log("SVGs créés avec succès");
         // Masquer les éléments de secours
         d3.selectAll('.fallback-element').style('display', 'none');
       } else {
-        console.error("Erreur lors de la création des SVGs");
         // Afficher les éléments de secours
         d3.selectAll('.fallback-element').style('display', 'block');
       }
@@ -439,16 +462,35 @@ export default class BirdStrikePeriods {
 
     // Update celestial bodies
     this.updateCelestialBodies(period);
+    
+    // Pour les nuages décoratifs, n'interrompez pas leur animation
+    // mais ajustez leur opacité selon la période
+    this.decorativeClouds.forEach(cloud => {
+      cloud
+        .transition()
+        .duration(1000)
+        .style('opacity', (this.getCloudOpacity(period) - 0.4));
+    });
   }
 
   updateCelestialBodies(period) {
-    // Hide moon initially
+    // Cacher initialement la lune et le soleil
     this.moon.style('opacity', 0);
+    this.sun.style('opacity', 0);
 
     if (period === 'night') {
       this.moon
-        .attr('x', -40)  // Ajusté pour le nouveau centrage (-80/2)
-        .attr('y', -this.height/2 + 30)  // Garde la même position verticale
+        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('y', -this.height/2 + 30)
+        .transition()
+        .duration(1000)
+        .style('opacity', 0.9);
+    }
+    
+    if (period === 'day') {
+      this.sun
+        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('y', -this.height/2 + 30)
         .transition()
         .duration(1000)
         .style('opacity', 0.9);
@@ -506,6 +548,311 @@ export default class BirdStrikePeriods {
       // Set fallback airplane rotation
       d3.selectAll('.fallback-element path')
         .attr('transform', `rotate(${this.getPlaneRotation(period)})`);
+        
+      // Appliquer l'opacité initiale aux nuages décoratifs
+      if (this.decorativeClouds) {
+        this.decorativeClouds.forEach(cloud => {
+          cloud.style('opacity', (this.getCloudOpacity(period) - 0.4));
+        });
+      }
     }
   }
-} 
+  
+  // Ajouter cette nouvelle méthode pour gérer l'animation
+  startCloudsAnimation() {
+    const self = this;
+    const viewWidth = parseInt(this.svg.style('width')) || 1200; // Largeur du SVG
+    
+    // 1. Animation des nuages décoratifs
+    this.decorativeClouds.forEach(cloud => {
+      const width = parseFloat(cloud.attr('width'));
+      const duration = 7000 + Math.random() * 5000; // Entre 7 et 12 secondes
+      
+      function moveDecorativeCloud() {
+        cloud
+          .interrupt() // Interrompre toute transition en cours
+          .transition()
+          .duration(duration)
+          .ease(d3.easeLinear) // Mouvement linéaire
+          .attr('x', -width - 100) // Déplacer hors de l'écran à gauche
+          .on('end', function() {
+            // Replacer à droite instantanément et recommencer
+            d3.select(this)
+              .attr('x', viewWidth)
+              .call(moveDecorativeCloud);
+          });
+      }
+      
+      // Position initiale aléatoire
+      cloud.attr('x', Math.random() * viewWidth);
+      
+      // Démarrer avec un léger délai
+      setTimeout(() => {
+        moveDecorativeCloud();
+      }, Math.random() * 1000);
+    });
+    
+    // 2. Animation des nuages principaux
+    const mainClouds = [
+      '.far-left-cloud', 
+      '.left-cloud', 
+      '.right-cloud', 
+      '.far-right-cloud'
+    ];
+    
+    mainClouds.forEach((selector, index) => {
+      const cloud = d3.select(selector);
+      if (cloud.empty()) return; // S'assurer que le nuage existe
+      
+      const width = parseFloat(cloud.attr('width'));
+      const duration = 10000 + (index * 2000) + Math.random() * 3000; // Durées variées selon le nuage
+      
+      function moveMainCloud() {
+        cloud
+          .interrupt() // Interrompre toute transition en cours
+          .transition()
+          .duration(duration)
+          .ease(d3.easeLinear) // Mouvement linéaire
+          .attr('x', -width - 200) // Déplacer hors écran à gauche 
+          .on('end', function() {
+            // Replacer à droite instantanément et recommencer
+            d3.select(this)
+              .attr('x', viewWidth)
+              .call(moveMainCloud);
+          });
+      }
+      
+      // Position initiale décalée
+      cloud.attr('x', 100 + (index * 200) + Math.random() * 100);
+      
+      // Démarrer avec un délai progressif
+      setTimeout(() => {
+        moveMainCloud();
+      }, index * 500);
+    });
+  }
+
+  // Nouvelle méthode pour le défilement automatique des périodes
+  startAutomaticTransition() {
+    let currentIndex = 0;
+    const self = this;
+    
+    // Fonction pour passer à la période suivante
+    function transitionToNextPeriod() {
+      // Déterminer la période actuelle et la suivante
+      const currentPeriod = self.periodKeys[currentIndex];
+      currentIndex = (currentIndex + 1) % self.periodKeys.length;
+      const nextPeriod = self.periodKeys[currentIndex];
+      
+      // Effectuer la transition vers la période suivante
+      self.transitionBetweenPeriods(currentPeriod, nextPeriod);
+      
+      // Planifier la transition suivante
+      setTimeout(transitionToNextPeriod, self.periodDuration);
+    }
+    
+    // Démarrer la séquence de transitions
+    transitionToNextPeriod();
+  }
+  
+  // Nouvelle méthode pour la transition fluide entre deux périodes
+  transitionBetweenPeriods(fromPeriod, toPeriod) {
+    const self = this;
+    const fromColor = this.periods[fromPeriod].color;
+    const toColor = this.periods[toPeriod].color;
+    const fromPercent = this.periods[fromPeriod].percent;
+    const toPercent = this.periods[toPeriod].percent;
+    
+    // Afficher le nom de la période dans un élément de texte
+    if (!this.periodLabel) {
+      this.periodLabel = this.svg.append('text')
+        .attr('class', 'period-label')
+        .attr('x', '50%')
+        .attr('y', 40)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '24px')
+        .attr('fill', 'rgba(255, 255, 255, 0.8)')
+        .style('font-weight', 'bold');
+    }
+    
+    // Transition du texte de la période
+    this.periodLabel
+      .text(this.periods[toPeriod].label)
+      .style('opacity', 0)
+      .transition()
+      .duration(this.transitionDuration / 2)
+      .style('opacity', 1);
+    
+    // Transition de la couleur d'arrière-plan avec interpolation
+    const colorInterpolator = d3.interpolate(fromColor, toColor);
+    
+    this.background
+      .transition()
+      .duration(this.transitionDuration)
+      .attrTween('fill', function() {
+        return function(t) {
+          return colorInterpolator(t);
+        };
+      });
+      
+    // Interpolation du pourcentage pour une animation fluide
+    const percentInterpolator = d3.interpolateNumber(fromPercent, toPercent);
+    
+    this.percentDisplay
+      .transition()
+      .duration(this.transitionDuration)
+      .tween('text', function() {
+        return function(t) {
+          const percent = Math.round(percentInterpolator(t));
+          d3.select(this).text(`${percent}%`);
+        };
+      });
+    
+    // Transition des opacités des nuages sans modifier leur animation de défilement
+    const cloudPlaneGroup = d3.select('.cloud-plane-group');
+    
+    cloudPlaneGroup
+      .transition()
+      .duration(this.transitionDuration)
+      .styleTween('opacity', function() {
+        const startOpacity = self.getCloudOpacity(fromPeriod);
+        const endOpacity = self.getCloudOpacity(toPeriod);
+        
+        return function(t) {
+          return startOpacity + (endOpacity - startOpacity) * t;
+        };
+      });
+    
+    // Transition de la rotation de l'avion (mais pas de sa position)
+    d3.selectAll('.airplane')
+      .transition()
+      .duration(this.transitionDuration)
+      .attrTween('transform', function() {
+        const startRotation = self.getPlaneRotation(fromPeriod);
+        const endRotation = self.getPlaneRotation(toPeriod);
+        
+        return function(t) {
+          const rotation = startRotation + (endRotation - startRotation) * t;
+          return `rotate(${rotation})`;
+        };
+      });
+    
+    // Transition des corps célestes
+    this.updateCelestialBodiesWithTransition(fromPeriod, toPeriod);
+    
+    // Mise à jour des opacités des nuages décoratifs sans interrompre leur animation
+    this.decorativeClouds.forEach(cloud => {
+      cloud
+        .transition()
+        .duration(this.transitionDuration)
+        .styleTween('opacity', function() {
+          const startOpacity = self.getCloudOpacity(fromPeriod) - 0.4;
+          const endOpacity = self.getCloudOpacity(toPeriod) - 0.4;
+          
+          return function(t) {
+            return startOpacity + (endOpacity - startOpacity) * t;
+          };
+        });
+    });
+  }
+  
+  // Méthode modifiée pour les corps célestes avec transitions douces
+  updateCelestialBodiesWithTransition(fromPeriod, toPeriod) {
+    // Transitions pour la lune
+    if (toPeriod === 'night') {
+      this.moon
+        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('y', -this.height/2 + 30)
+        .transition()
+        .duration(this.transitionDuration)
+        .style('opacity', 0.9);
+    } else {
+      this.moon
+        .transition()
+        .duration(this.transitionDuration)
+        .style('opacity', 0);
+    }
+    
+    // Transitions pour le soleil - exactement comme la lune
+    if (toPeriod === 'day') {
+      this.sun
+        .attr('x', 120)  // Déplacé de 60 à 120 pour être plus à droite
+        .attr('y', -this.height/2 + 30)
+        .transition()
+        .duration(this.transitionDuration)
+        .style('opacity', 0.9);
+    } else {
+      this.sun
+        .transition()
+        .duration(this.transitionDuration)
+        .style('opacity', 0);
+    }
+  }
+  
+  // Remplacer toutes les versions de startCloudsAnimation() par celle-ci:
+  startCloudsAnimation() {
+    const self = this;
+    const viewWidth = parseInt(this.svg.style('width')) || 1200;
+    
+    // Configuration commune pour tous les nuages
+    const commonSettings = {
+      duration: 12000,
+      delay: 0,
+      ease: d3.easeLinear
+    };
+    
+    // Fonction unique d'animation de nuage pour tous les types
+    function moveCloud(cloud, duration) {
+      const width = parseFloat(cloud.attr('width'));
+      
+      // Réinitialiser toute transition précédente
+      cloud.interrupt();
+      
+      // Animation de droite à gauche
+      cloud
+        .transition()
+        .duration(duration || commonSettings.duration)
+        .ease(commonSettings.ease)
+        .attr('x', -width - 100)
+        .on('end', function() {
+          // Replacer à droite et recommencer
+          d3.select(this)
+            .attr('x', viewWidth)
+            .call(function(c) { moveCloud(c, duration); });
+        });
+    }
+    
+    // 1. Animer tous les nuages décoratifs
+    this.decorativeClouds.forEach((cloud, i) => {
+      // Position initiale légèrement décalée
+      cloud.attr('x', viewWidth + (i * 50));
+      
+      // Démarrer avec un petit délai pour éviter le mouvement synchronisé
+      setTimeout(() => {
+        moveCloud(cloud);
+      }, i * 400);
+    });
+    
+    // 2. Animer les nuages principaux
+    const mainClouds = [
+      '.far-left-cloud', 
+      '.left-cloud', 
+      '.right-cloud', 
+      '.far-right-cloud'
+    ];
+    
+    mainClouds.forEach((selector, i) => {
+      const cloud = d3.select(selector);
+      if (cloud.empty()) return;
+      
+      // Position initiale légèrement décalée
+      cloud.attr('x', viewWidth + (i * 120));
+      
+      // Démarrer avec un petit délai pour éviter le mouvement synchronisé
+      setTimeout(() => {
+        // Même fonction d'animation que pour les nuages décoratifs
+        moveCloud(cloud, commonSettings.duration + (i * 500));
+      }, i * 600);
+    });
+  }
+}

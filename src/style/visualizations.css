@@ -207,7 +207,7 @@
 }
 
 .day-icon {
-    background-color: #FFE658;
+    background-color: #f7d61b;
     color: black;
 }
 
@@ -541,9 +541,26 @@
     background-color: #f9f9f9;
     height: auto;
     min-height: 300px;
+    margin-top: 80px; /* Ajout d'une marge en haut pour aligner avec l'avion */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Aligner en haut au lieu de center */
+}
+
+/* Styles pour le contenu interne du panneau */
+.info-panel h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.info-panel .stats-container {
+    margin-bottom: 15px;
+}
+
+.info-panel .description-container {
+    min-height: 100px; /* Hauteur minimale fixe pour la zone de description */
 }
 
 /* Style pour les parties de l'avion */
@@ -595,4 +612,8 @@
     color: white;
     cursor: pointer;
     font-size: 16px;
+}
+
+.year-button:hover {
+    background-color: #009B9B;
 }
