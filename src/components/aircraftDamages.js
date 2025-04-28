@@ -35,11 +35,11 @@ class AircraftDamages {
     this.damageData = {
       aile_gauche: {
         name: "Aile gauche",
-        strikes: 2345,
+        strikes : 2345,
         percentage: "23%",
         description:
           "L'aile gauche est particulièrement vulnérable lors du décollage et de l'atterrissage.",
-        color: "#4287f5",
+        color: "#00C2CB",
       },
       aile_droite: {
         name: "Aile droite",
@@ -47,14 +47,14 @@ class AircraftDamages {
         percentage: "22%",
         description:
           "L'aile droite subit des impacts similaires à l'aile gauche.",
-        color: "#4287f5",
+        color: "#00C2CB",
       },
       corps: {
         name: "Corps de l'avion",
         strikes: 1547,
         percentage: "15%",
         description: "Le fuselage est moins touché que les autres parties.",
-        color: "#42b9f5",
+        color: "#00C2CB",
       },
       nez: {
         name: "Nez",
@@ -62,7 +62,7 @@ class AircraftDamages {
         percentage: "8%",
         description:
           "Le nez de l'avion, y compris le radar et les capteurs, est vulnérable aux impacts directs.",
-        color: "#42c9f5",
+        color: "#00C2CB",
       },
       aileronsQueues: {
         name: "Ailerons et queue",
@@ -70,7 +70,7 @@ class AircraftDamages {
         percentage: "2%",
         description:
           "Les ailerons et la queue sont les parties les moins touchées par les impacts d'oiseaux.",
-        color: "#42f59e",
+        color: "#00C2CB",
       },
       moteur_gauche: {
         name: "Moteur gauche",
@@ -78,15 +78,15 @@ class AircraftDamages {
         percentage: "16%",
         description:
           "Le moteur gauche est particulièrement exposé lors des phases d'approche et de décollage.",
-        color: "#f54242",
+        color: "#00C2CB",
       },
       moteur_droit: {
-        name: "Moteur droit",
+        name: "Moteur droit", 
         strikes: 1443,
         percentage: "14%",
         description:
           "Le moteur droit subit des impacts similaires au moteur gauche, souvent avec des conséquences graves.",
-        color: "#f54242",
+        color: "#00C2CB",
       },
     };
 
@@ -136,6 +136,7 @@ class AircraftDamages {
       .append("div")
       .attr("class", "info-panel")
       .style("width", "35%")
+      .style("height", "10px")
       .style("border", "1px solid #ddd")
       .style("border-radius", "8px")
       .style("padding", "20px")
@@ -236,7 +237,7 @@ class AircraftDamages {
     // Créer un groupe SVG pour centrer l'avion
     const aircraftGroup = svg
       .append("g")
-      .attr("transform", "translate(250, 155)"); // Valeurs fixes au lieu de pourcentages
+      .attr("transform", "translate(250, 200)"); // Valeurs fixes au lieu de pourcentages
 
     // Charger tous les SVG et les ajouter au conteneur
     Promise.all(
@@ -285,7 +286,6 @@ class AircraftDamages {
             partGroup
               .on("mouseenter", function () {
                 const partId = d3.select(this).attr("data-part");
-                console.log(`Survol détecté sur: ${partId}`);
 
                 if (!partId || !self.damageData[partId]) return;
 
@@ -308,7 +308,6 @@ class AircraftDamages {
               })
               .on("mouseleave", function () {
                 const partId = d3.select(this).attr("data-part");
-                console.log(`Sortie détectée sur: ${partId}`);
 
                 self.selectedPart = null;
                 self.resetInfoPanel();
@@ -326,11 +325,9 @@ class AircraftDamages {
               `Erreur lors du chargement du SVG ${part.id}:`,
               error
             );
-          });
+          }); 
       })
     ).then(() => {
-      console.log("Tous les SVG ont été chargés et ajoutés");
-
       // Ordonner les parties par z-index
       svg.selectAll(".aircraft-part").sort((a, b) => {
         const partA = parts.find(
@@ -351,35 +348,27 @@ class AircraftDamages {
     // Vider le panneau
     d3.select(this.infoPanel).html("");
 
-    // Ajouter l'indicateur de couleur
-    d3.select(this.infoPanel)
-      .append("div")
-      .style("height", "10px")
-      .style("background-color", data.color)
-      .style("border-radius", "3px")
-      .style("margin-bottom", "15px");
 
     // Ajouter le titre
     d3.select(this.infoPanel)
       .append("h3")
-      .style("margin-top", "0")
-      .style("color", "#2c3e50")
       .text(data.name);
 
-    // Ajouter les statistiques
-    const stats = d3
-      .select(this.infoPanel)
+    // Ajouter les statistiques dans un conteneur dédié
+    const stats = d3.select(this.infoPanel)
       .append("div")
-      .style("margin-bottom", "15px");
+      .attr("class", "stats-container");
 
-    stats
-      .append("p")
+    stats.append("p")
       .html(`<strong>Nombre d'impacts:</strong> ${data.strikes}`);
 
-    stats.append("p").html(`<strong>Pourcentage:</strong> ${data.percentage}`);
+    stats.append("p")
+      .html(`<strong>Pourcentage:</strong> ${data.percentage}`);
 
-    // Ajouter la description
+    // Ajouter la description dans un conteneur avec hauteur fixe
     d3.select(this.infoPanel)
+      .append("div")
+      .attr("class", "description-container")
       .append("p")
       .style("line-height", "1.4")
       .style("color", "#555")
@@ -390,19 +379,19 @@ class AircraftDamages {
     // Utiliser D3 pour réinitialiser le panneau d'information
     d3.select(this.infoPanel).html("");
 
+    // Créer un conteneur avec une position stable
     d3.select(this.infoPanel)
       .append("div")
       .attr("class", "default-info")
       .style("display", "flex")
       .style("height", "100%")
-      .style("align-items", "center")
+      .style("align-items", "center") // Garde le centrage pour le message par défaut
       .style("justify-content", "center")
+      .style("padding-top", "30px") // Ajout d'un padding en haut pour compenser la position
       .style("color", "#7f8c8d")
       .style("text-align", "center")
       .append("p")
-      .text(
-        "Passez votre souris sur une partie de l'avion pour voir les détails des impacts."
-      );
+      .text("Passez votre souris sur une partie de l'avion pour voir les détails des impacts.");
   }
 }
 

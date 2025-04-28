@@ -1,9 +1,6 @@
 import BirdStrikePeriods from '../components/birdStrikePeriods.js';
 import Species from '../components/species.js';
 import AircraftDamages from '../components/aircraftDamages.js';
-import BubbleMap  from '../components/bubbleMap.js'; // Assurez-vous que le chemin est correct
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialisation de BirdStrikePeriods
