@@ -262,8 +262,8 @@ class AircraftDamages {
               .attr("class", "aircraft-part")
               .attr("data-part", part.id)
               .style("cursor", "pointer")
-              .attr("fill", "#d3d3d3") // Couleur
-              .attr("stroke", "#fff") // Couleur des bordures
+              .attr("fill", "rgba(228, 227, 227, 0.9)") // Couleur
+              .attr("stroke", "rgba(0, 0, 0, 0.2)") // Couleur des bordures
               .attr(
                 "transform",
                 `translate(${part.position.x}, ${part.position.y}) scale(${part.scale})`

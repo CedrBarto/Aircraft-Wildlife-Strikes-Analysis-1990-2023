@@ -110,7 +110,7 @@ export default class BirdStrikePeriods {
     
     this.leftPanel.append('p')
       .attr('class', 'description')
-      .text('Ce visuel représente le pourcentage des impacts dû au oiseaux selon les différentes périodes du jour. Nous avons l`aube, la journée, le crépuscule et la nuit".');
+      .text('Ce visuel représente le pourcentage des impacts dû au oiseaux selon les différentes périodes du jour. Nous avons l`aube, la journée, le crépuscule et la nuit.');
 
     // Add debug info for SVG paths if needed
     this.leftPanel.append('div')
@@ -668,7 +668,7 @@ export default class BirdStrikePeriods {
       this.periodLabel = this.svg.append('text')
         .attr('class', 'period-label')
         .attr('x', '50%')
-        .attr('y', 40)
+        .attr('y', 450)
         .attr('text-anchor', 'middle')
         .attr('font-size', '24px')
         .attr('fill', 'rgba(255, 255, 255, 0.8)')

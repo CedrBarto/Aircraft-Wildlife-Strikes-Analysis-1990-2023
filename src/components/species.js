@@ -14,7 +14,7 @@ export default class Species {
     this.currentIndex = 0;
     this.birds = [
       {
-        name: "Unknown Bird (Small)",
+        name: "Oiseau inconnu (Petit)",
         image: new URL('../../public/assets/img/unknownbird_small.png', import.meta.url).href,
         deaths: "48'898",
         percentage: "~ 28%",
@@ -22,7 +22,7 @@ export default class Species {
         rank: "1er"
       },
       {
-        name: "Unknown Bird (Medium)",
+        name: "Oiseau inconnu (Moyen)",
         image: new URL('../../public/assets/img/unknownbird_medium.png', import.meta.url).href,
         deaths: "38'259",
         percentage: "~ 22%",
@@ -30,7 +30,7 @@ export default class Species {
         rank: "2e"
       },
       {
-        name: "Unknown Bird",
+        name: "Oiseau inconnu",
         image: new URL('../../public/assets/img/unknownbird.png', import.meta.url).href,
         deaths: "24'834",
         percentage: "~ 14%",
@@ -38,7 +38,7 @@ export default class Species {
         rank: "3e"
       },
       {
-        name: "Mourning Dove",
+        name: "Colombe triste",
         image: new URL('../../public/assets/img/mourningdove.png', import.meta.url).href,
         deaths: "14'576",
         percentage: "~ 8%",
@@ -46,7 +46,7 @@ export default class Species {
         rank: "4e"
       },
       {
-        name: "Barn Swallow",
+        name: "Hirondelle",
         image: new URL('../../public/assets/img/barn.png', import.meta.url).href,
         deaths: "9'679",
         percentage: "~ 5%",
@@ -54,7 +54,7 @@ export default class Species {
         rank: "5e"
       },
       {
-        name: "Killdeer",
+        name: "Pluvier kildir",
         image: new URL('../../public/assets/img/killdeer.png', import.meta.url).href,
         deaths: "9'592",
         percentage: "~ 5%",
@@ -62,7 +62,7 @@ export default class Species {
         rank: "6e"
       },
       {
-        name: "American Kestrel",
+        name: "Faucon crécerelle américain",
         image: new URL('../../public/assets/img/kestrel.png', import.meta.url).href,
         deaths: "8'879",
         percentage: "~ 5%",
@@ -70,7 +70,7 @@ export default class Species {
         rank: "7e"
       },
       {
-        name: "Horned Lark",
+        name: "Alouette hausse-col",
         image: new URL('../../public/assets/img/hornedlark.png', import.meta.url).href,
         deaths: "8'032",
         percentage: "~ 5%",
@@ -78,7 +78,7 @@ export default class Species {
         rank: "8e"
       },
       {
-        name: "Gulls",
+        name: "Goélands",
         image: new URL('../../public/assets/img/gulls.png', import.meta.url).href,
         deaths: "7'414",
         percentage: "~ 4%",
@@ -86,7 +86,7 @@ export default class Species {
         rank: "9e"
       },
       {
-        name: "European Starling",
+        name: "Étourneau sansonnet",
         image: new URL('../../public/assets/img/europeanstarling.png', import.meta.url).href,
         deaths: "6'148",
         percentage: "~ 4%",
