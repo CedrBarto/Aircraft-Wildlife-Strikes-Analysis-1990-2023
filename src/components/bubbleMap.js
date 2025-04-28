@@ -24,7 +24,7 @@ class BubbleMap {
   startCountdown() {
     setInterval(() => {
       this.changeYear('next');
-    }, 3000); 
+    }, 300000); 
   }
 
   createYear() {

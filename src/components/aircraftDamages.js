@@ -58,6 +58,7 @@ class AircraftDamages {
       },
       nez: {
         name: "Nez",
+        img: "../../public/assets/svg/nez_avion.svg",
         strikes: 872,
         percentage: "8%",
         description:
@@ -107,7 +108,7 @@ class AircraftDamages {
       .append("p")
       .attr("class", "visualization-subtitle")
       .text(
-        "Survolez les différentes parties de l'avion pour voir les détails des impacts."
+        "Dans cette visualisation, nous montrons les différentes parties de l'avion les plus souvent touchées par les impacts d'oiseaux."
       );
 
     // Créer un div pour la visualisation avec D3
@@ -261,7 +262,8 @@ class AircraftDamages {
               .attr("class", "aircraft-part")
               .attr("data-part", part.id)
               .style("cursor", "pointer")
-              .style("opacity", 0.7)
+              .attr("fill", "#d3d3d3") // Couleur
+              .attr("stroke", "#fff") // Couleur des bordures
               .attr(
                 "transform",
                 `translate(${part.position.x}, ${part.position.y}) scale(${part.scale})`
