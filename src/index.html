@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aircraft Wildlife Strikes Analysis (1990-2023)</title>
     
     <!-- Stylesheets -->
+    <link rel="stylesheet" href="style/index.css">
     <link rel="stylesheet" href="style/visualizations.css">
+    <link rel="stylesheet" href="style/footer.css">
     <link rel="icon" href="/assets/favicon/favicon.ico" type="image/x-icon">
 
     <script type="module" src="/components/header.js"></script>
@@ -17,12 +19,17 @@
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-    
 </head>
 <body>
+    <!-- Section d'accueil en plein écran -->
+    <div id="landing-container">
+        <div class="content">
+            <h1>Aircraft Wildlife Strikes Analysis 1990-2023</h1>
+            <a href="#" id="start-button" class="button">Prendre son envol</a>
+        </div>
+    </div>
 
     <main>
-
         <section class="visualization-section">
             <!-- Container pour la visualisation des dommages d'avion -->
             <div id="aircraft-damages-container" class="visualization-container">
@@ -69,6 +76,27 @@
         <p>© 2025 - Projet VisualDon - HEIG-VD</p>
         <p>Données: <a href="https://www.kaggle.com/datasets/dianaddx/aircraft-wildlife-strikes-1990-2023" target="_blank">Federal Aviation Administration</a></p>
     </footer>
+
+    <!-- Script pour le défilement vers la première visualisation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('start-button');
+            
+            startButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Cibler la première visualisation
+                const aircraftVisualization = document.getElementById('aircraft-damages-container');
+                
+                if (aircraftVisualization) {
+                    // Défilement fluide vers la visualisation
+                    aircraftVisualization.scrollIntoView({ 
+                        behavior: 'smooth' 
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
