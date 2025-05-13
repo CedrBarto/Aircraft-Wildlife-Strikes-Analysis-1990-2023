@@ -355,8 +355,9 @@ function animateToPhase(targetPhase) {
     // Obtenir la valeur actuelle du slider
     const currentValue = parseFloat(document.getElementById("flightProgress").value);
     
-    // Calculer la valeur cible en fonction de la phase (milieu de la phase)
-    const targetValue = (targetPhase + 0.5) * (100 / phases.length);
+    // Correction : calculer la valeur cible pour aller jusqu'au bout du slider
+    const totalPhases = phases.length - 1;
+    const targetValue = (targetPhase / totalPhases) * 100;
     
     // Durée de l'animation en ms
     const duration = 1000;

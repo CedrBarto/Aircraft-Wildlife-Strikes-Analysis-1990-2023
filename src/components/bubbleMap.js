@@ -9,9 +9,11 @@ class BubbleMap {
     this.colorScale = null;
     this.currentYear = null; // Initialiser l'année courante
     this.yearText = null; // Élément pour afficher l'année courante
+    this.resizeTimeout = null;
     
     this.init();
-    this.startCountdown();
+    // this.startCountdown(); // Suppression du changement automatique
+    window.addEventListener('resize', () => this.handleResize());
   }
   
   init() {
@@ -19,12 +21,7 @@ class BubbleMap {
     this.createYear(); // Texte
     this.setupProjection();
     this.loadData();
-  }
-
-  startCountdown() {
-    setInterval(() => {
-      this.changeYear('next');
-    }, 300000); 
+    this.handleResize(); // Appel initial pour adapter la taille
   }
 
   createYear() {
@@ -39,7 +36,31 @@ class BubbleMap {
       .attr("class", "year-text")
       .style("font-size", "24px")
       .style("margin-right", "20px");
+  }
 
+  createYearButtons() {
+    // Supprimer les anciens boutons si existants
+    d3.select("#bubble-map-container .year-buttons").remove();
+    const controlContainer = d3.select("#bubble-map-container")
+      .append("div")
+      .attr("class", "year-buttons")
+      .style("margin-bottom", "15px")
+      .style("display", "flex")
+      .style("gap", "10px")
+      .style("justify-content", "center");
+
+    this.years.forEach(year => {
+      controlContainer.append("button")
+        .attr("class", "year-btn" + (year === this.currentYear ? " active" : ""))
+        .text(year)
+        .on("click", (event) => {
+          this.currentYear = year;
+          this.updateYearText();
+          this.updateBubbles();
+          d3.selectAll(".year-btn").classed("active", false);
+          d3.select(event.target).classed("active", true);
+        });
+    });
   }
   
   createSvg() {
@@ -83,6 +104,7 @@ class BubbleMap {
       this.drawMap(us);
       this.currentYear = this.years[0]; // Initialiser l'année courante
       this.updateYearText(); // Afficher l'année courante
+      this.createYearButtons(); // Créer les boutons d'années
       this.drawBubbles(); // Dessiner les bulles pour l'année courante
     })
     .catch(error => {
@@ -149,17 +171,6 @@ class BubbleMap {
       .text(d => `Année: ${d.INCIDENT_YEAR}, Coordonnées: ${d.LATITUDE}, ${d.LONGITUDE}`);
   }
   
-  changeYear(direction) {
-    const currentIndex = this.years.indexOf(this.currentYear);
-    if (direction === 'next') {
-      this.currentYear = this.years[(currentIndex + 1) % this.years.length];
-    } else {
-      this.currentYear = this.years[(currentIndex - 1 + this.years.length) % this.years.length];
-    }
-    this.updateYearText(); // Mettre à jour le texte de l'année courante
-    this.updateBubbles(); // Mettre à jour les bulles pour l'année sélectionnée
-  }
-
   updateBubbles() {
     // Sélectionner toutes les bulles et les mettre à jour
     const bubbles = this.svg.selectAll(".bubble")
@@ -194,6 +205,10 @@ class BubbleMap {
 
     // Supprimer les bulles qui ne correspondent pas à l'année courante
     bubbles.exit().remove();
+  }
+
+  handleResize() {
+    // Implémentation de la gestion du redimensionnement
   }
 
 }

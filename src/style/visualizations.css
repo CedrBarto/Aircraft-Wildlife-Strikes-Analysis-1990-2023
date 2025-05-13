@@ -588,3 +588,24 @@
     text-align: center;
     margin: 20px 0;
 }
+
+.year-buttons {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.year-btn {
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid #00C2CB;
+    background: white;
+    color: #00C2CB;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.year-btn.active, .year-btn:hover {
+    background: #00C2CB;
+    color: white;
+}
