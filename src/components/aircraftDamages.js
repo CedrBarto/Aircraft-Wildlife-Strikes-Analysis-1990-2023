@@ -35,31 +35,31 @@ class AircraftDamages {
     this.damageData = {
       aile_gauche: {
         name: "Aile gauche",
-        strikes : 2345,
-        percentage: "23%",
+        strikes : `16'945`,
+        percentage: "14%",
         description:
           "L'aile gauche est particulièrement vulnérable lors du décollage et de l'atterrissage.",
         color: "#00C2CB",
       },
       aile_droite: {
         name: "Aile droite",
-        strikes: 2256,
-        percentage: "22%",
+        strikes: `16'945`,
+        percentage: "14%",
         description:
           "L'aile droite subit des impacts similaires à l'aile gauche.",
         color: "#00C2CB",
       },
       corps: {
         name: "Corps de l'avion",
-        strikes: 1547,
-        percentage: "15%",
-        description: "Le fuselage est moins touché que les autres parties.",
+        strikes: `25'685`,
+        percentage: "5%",
+        description: "Le fuselage est souvent touché mais ses impacts sont rarement graves.",
         color: "#00C2CB",
       },
       nez: {
         name: "Nez",
         img: "../../public/assets/svg/nez_avion.svg",
-        strikes: 872,
+        strikes: `33'237`,
         percentage: "8%",
         description:
           "Le nez de l'avion, y compris le radar et les capteurs, est vulnérable aux impacts directs.",
@@ -67,26 +67,26 @@ class AircraftDamages {
       },
       aileronsQueues: {
         name: "Ailerons et queue",
-        strikes: 210,
-        percentage: "2%",
+        strikes: `2'926`,
+        percentage: "5%",
         description:
           "Les ailerons et la queue sont les parties les moins touchées par les impacts d'oiseaux.",
         color: "#00C2CB",
       },
       moteur_gauche: {
-        name: "Moteur gauche",
-        strikes: 1683,
-        percentage: "16%",
+        name: "Réacteur gauche",
+        strikes: `24'703`,
+        percentage: "26%",
         description:
-          "Le moteur gauche est particulièrement exposé lors des phases d'approche et de décollage.",
+          "Le réacteur gauche est particulièrement exposé aux impacts notamment lors des phases d'approche et de décollage.",
         color: "#00C2CB",
       },
       moteur_droit: {
-        name: "Moteur droit", 
-        strikes: 1443,
-        percentage: "14%",
+        name: "Réacteur droit", 
+        strikes: `716`,
+        percentage: "1%",
         description:
-          "Le moteur droit subit des impacts similaires au moteur gauche, souvent avec des conséquences graves.",
+          "Le réacteur droit subit beaucoup moins d'impact que le réacteur gauche.",
         color: "#00C2CB",
       },
     };
